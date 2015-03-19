@@ -12,18 +12,26 @@
 
         private static void Main()
         {
-            Task.WaitAll(
+            var task = Task.WhenAll(
                 Task.Run(() => HandleCsv("ALTERNATIVE_TITLE.csv", ImportAlternativeTitle)),
                 Task.Run(() => HandleCsv("CHARACTER.csv", ImportCharacter)),
                 Task.Run(() => HandleCsv("PRODUCTION_CAST.csv", ImportProductionCast)));
+
+            task.Wait();
+            foreach (var errors in task.Result)
+            {
+                Console.WriteLine(string.Join(Environment.NewLine, errors.Take(10)));
+            }
 
             Console.WriteLine(
                 "Unique roles: {0} {1}",
                 Environment.NewLine,
                 string.Join(Environment.NewLine + "Role :", UsedRoles));
+
+            Console.Read();
         }
 
-        private static async Task HandleCsv(string file, Func<string[], bool> handleLine)
+        private static async Task<List<string>>  HandleCsv(string file, Func<string[], bool> handleLine)
         {
             var errors = new List<string>();
 
@@ -39,14 +47,12 @@
                         {
                             string msg = string.Format("[{0}] Can't parse line {1}, {2}", file, i, line);
                             errors.Add(msg);
-                            Console.WriteLine(msg);
                         }
                     }
                     catch (Exception)
                     {
                         string msg = string.Format("[{0}] Exception while parsing {1}, {2}", file, i, line);
                         errors.Add(msg);
-                        Console.WriteLine(msg);
                     }
 
                     line = await tr.ReadLineAsync();
@@ -59,11 +65,7 @@
                 }
             }
 
-            if (errors.Any())
-            {
-                Console.Write(string.Join(Environment.NewLine, errors));
-                Console.Read();
-            }
+            return errors;
         }
 
         private static bool ImportAlternativeTitle(string[] inp)
