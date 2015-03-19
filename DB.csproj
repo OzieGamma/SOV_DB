@@ -57,6 +57,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\CharacterRole.cs" />
+    <Compile Include="Models\ProductionCast.cs" />
+    <Compile Include="Parsing\AlternativeProductionTitleParser.cs" />
+    <Compile Include="LineParser.cs" />
+    <Compile Include="Models\AlternativeProductionTitle.cs" />
+    <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\PersonSpouseInfo.cs" />
+    <Compile Include="Parsing\CharacterParser.cs" />
+    <Compile Include="Parsing\ParseUtility.cs" />
+    <Compile Include="Parsing\PersonParser.cs" />
+    <Compile Include="Parsing\ProductionCastParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

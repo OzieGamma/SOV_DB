@@ -1,111 +1,72 @@
-﻿namespace DB
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using DB.Parsing;
 
-    internal class Program
+namespace DB
+{
+    public static class Program
     {
-        private const string DirPath = "C:\\Users\\Oswald\\Downloads\\Movies";
+        // Debug messages will be printed every time this number of lines is parsed
+        private const int ReportPeriod = 100000;
+
+        // All CSV files must be in that folder, without renaming them
+        private const string CsvRootPath =
+            //@"C:\Users\Oswald\Downloads\Movies"; // Oswald
+            @"X:\Documents\EPFL\DB\Project dataset"; // Solal
 
         private static void Main()
         {
-            var task = Task.WhenAll(
-                Task.Run(() => HandleCsv("ALTERNATIVE_TITLE.csv", ImportAlternativeTitle)),
-                Task.Run(() => HandleCsv("CHARACTER.csv", ImportCharacter)),
-                Task.Run(() => HandleCsv("PRODUCTION_CAST.csv", ImportProductionCast)));
-
-            task.Wait();
-            foreach (var errors in task.Result)
-            {
-                Console.WriteLine(string.Join(Environment.NewLine, errors.Take(10)));
-            }
-
-            Console.WriteLine(
-                "Unique roles: {0} {1}",
-                Environment.NewLine,
-                string.Join(Environment.NewLine + "Role :", UsedRoles));
-
+            ParseCsvs( new AlternativeProductionTitleParser(), new CharacterParser(), new PersonParser(), new ProductionCastParser() );
+            Console.WriteLine( "Done." );
             Console.Read();
         }
 
-        private static async Task<List<string>>  HandleCsv(string file, Func<string[], bool> handleLine)
+        private static void ParseCsvs( params LineParser<object>[] parsers )
         {
+            Task.WaitAll( parsers.Select( parser => Task.Run( () => ParseCsv( parser ) ) ).ToArray() );
+        }
+
+        private static IList<T> ParseCsv<T>( LineParser<T> parser )
+            where T : class
+        {
+            var results = new List<T>();
             var errors = new List<string>();
 
-            int i = 0;
-            using (TextReader tr = File.OpenText(Path.Combine(DirPath, file)))
+            int lineNumber = 0;
+            foreach ( var values in ReadCsv( parser.FileName ) )
             {
-                string line = await tr.ReadLineAsync();
-                while (line != null)
+                try
                 {
-                    try
-                    {
-                        if (!handleLine(line.Split('\t')))
-                        {
-                            string msg = string.Format("[{0}] Can't parse line {1}, {2}", file, i, line);
-                            errors.Add(msg);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        string msg = string.Format("[{0}] Exception while parsing {1}, {2}", file, i, line);
-                        errors.Add(msg);
-                    }
+                    results.Add( parser.Parse( values ) );
+                }
+                catch ( Exception e )
+                {
+                    errors.Add( string.Format( "[{0}] Exception while parsing line {1}: {2}", parser.FileName, lineNumber, e.Message ) );
+                }
 
-                    line = await tr.ReadLineAsync();
-
-                    if (i % 10000 == 0)
-                    {
-                        Console.WriteLine("[{0}] Done with {1}", file, i);
-                    }
-                    i += 1;
+                lineNumber++;
+                if ( lineNumber % ReportPeriod == 0 )
+                {
+                    Debug.WriteLine( "[{0}] Done with {1}.", parser.FileName, lineNumber );
+                    lineNumber = 0;
                 }
             }
 
-            return errors;
-        }
-
-        private static bool ImportAlternativeTitle(string[] inp)
-        {
-            long id = long.Parse(inp[0]);
-            long productionId = long.Parse(inp[1]);
-            string title = inp[2];
-
-            return title != "\\N" && !string.IsNullOrWhiteSpace(title);
-        }
-
-        private static bool ImportCharacter(string[] inp)
-        {
-            long id = long.Parse(inp[0]);
-            string name = inp[1];
-
-            return name != "\\N" && !string.IsNullOrWhiteSpace(name);
-        }
-
-        private static readonly ISet<string> UsedRoles = new HashSet<string>();
-
-        private static bool ImportProductionCast(string[] inp)
-        {
-            long productionId = long.Parse(inp[0]);
-            long personId = long.Parse(inp[1]);
-            long? characterId;
-            if (inp[2] == "\\N")
+            if ( errors.Count > 0 )
             {
-                characterId = null;
-            }
-            else
-            {
-                characterId = long.Parse(inp[2]);
+                throw new Exception( "Parse errors." + Environment.NewLine + string.Join( Environment.NewLine, errors ) );
             }
 
-            string role = inp[3];
+            return results;
+        }
 
-            UsedRoles.Add(role);
-
-            return role != "\\N" && !string.IsNullOrWhiteSpace(role);
+        private static IEnumerable<string[]> ReadCsv( string fileName )
+        {
+            return File.ReadLines( Path.Combine( CsvRootPath, fileName.ToUpper() + ".csv" ) ).Select( row => row.Split( '\t' ).Select( val => val.Trim() ).ToArray() );
         }
     }
 }
