@@ -55,6 +55,7 @@
     <Compile Include="Models\CharacterRole.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\ProductionCast.cs" />
+    <Compile Include="Models\ProductionCompany.cs" />
     <Compile Include="Parsing\AlternativeProductionTitleParser.cs" />
     <Compile Include="LineParser.cs" />
     <Compile Include="Models\AlternativeProductionTitle.cs" />
@@ -66,6 +67,8 @@
     <Compile Include="Parsing\ParseUtility.cs" />
     <Compile Include="Parsing\PersonParser.cs" />
     <Compile Include="Parsing\ProductionCastParser.cs" />
+    <Compile Include="Models\ProductionCompanyKind.cs" />
+    <Compile Include="Parsing\ProductionCompanyParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

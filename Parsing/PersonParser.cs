@@ -33,7 +33,17 @@ namespace DB.Parsing
 
         private static Gender ParseGender( string gender )
         {
-            return gender.ToUpper() == "M" ? Gender.Male : Gender.Female;
+            switch ( gender.ToUpperInvariant() )
+            {
+                case "M":
+                    return Gender.Male;
+
+                case "F":
+                    return Gender.Female;
+
+                default:
+                    throw new InvalidOperationException( "Unknown gender: " + gender );
+            }
         }
 
         private static decimal ParseHeight( string height )
