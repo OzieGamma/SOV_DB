@@ -20,7 +20,13 @@ namespace DB
 
         private static void Main()
         {
-            ParseCsvs( new AlternativeProductionTitleParser(), new CharacterParser(), new PersonParser(), new ProductionCastParser() );
+            ParseCsvs(
+                //new AlternativeProductionTitleParser(),
+                //new CharacterParser(),
+                //new PersonParser(),
+                //new ProductionCastParser(),
+                new CompanyParser()
+            );
             Console.WriteLine( "Done." );
             Console.Read();
         }
@@ -52,7 +58,6 @@ namespace DB
                 if ( lineNumber % ReportPeriod == 0 )
                 {
                     Debug.WriteLine( "[{0}] Done with {1}.", parser.FileName, lineNumber );
-                    lineNumber = 0;
                 }
             }
 
