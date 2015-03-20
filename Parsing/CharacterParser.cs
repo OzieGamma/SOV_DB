@@ -2,7 +2,7 @@
 
 namespace DB.Parsing
 {
-    public sealed class CharacterParser : LineParser<Character>
+    public sealed class CharacterParser : ILineParser<Character>
     {
         public string FileName
         {

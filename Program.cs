@@ -26,18 +26,19 @@ namespace DB
                 //new PersonParser(),
                 //new ProductionCastParser(),
                 //new CompanyParser(),
-                new ProductionCompanyParser()
+                //new ProductionCompanyParser(),
+                new AlternativePersonNameParser()
             );
             Console.WriteLine( "Done." );
             Console.Read();
         }
 
-        private static void ParseCsvs( params LineParser<object>[] parsers )
+        private static void ParseCsvs( params ILineParser<object>[] parsers )
         {
             Task.WaitAll( parsers.Select( parser => Task.Run( () => ParseCsv( parser ) ) ).ToArray() );
         }
 
-        private static IList<T> ParseCsv<T>( LineParser<T> parser )
+        private static IList<T> ParseCsv<T>( ILineParser<T> parser )
             where T : class
         {
             var results = new List<T>();

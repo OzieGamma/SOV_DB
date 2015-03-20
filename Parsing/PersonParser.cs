@@ -6,7 +6,7 @@ using DB.Models;
 
 namespace DB.Parsing
 {
-    public sealed class PersonParser : LineParser<Person>
+    public sealed class PersonParser : ILineParser<Person>
     {
         public string FileName
         {

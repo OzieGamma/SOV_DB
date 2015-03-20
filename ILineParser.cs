@@ -1,6 +1,6 @@
 ﻿namespace DB
 {
-    public interface LineParser<out T>
+    public interface ILineParser<out T>
         where T : class
     {
         string FileName { get; }

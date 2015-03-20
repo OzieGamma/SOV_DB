@@ -2,7 +2,7 @@
 
 namespace DB.Parsing
 {
-    public sealed class AlternativeProductionTitleParser : LineParser<AlternativeProductionTitle>
+    public sealed class AlternativeProductionTitleParser : ILineParser<AlternativeProductionTitle>
     {
         public string FileName
         {

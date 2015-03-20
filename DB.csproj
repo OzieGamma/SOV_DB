@@ -51,13 +51,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AlternativePersonName.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\CharacterRole.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\ProductionCast.cs" />
     <Compile Include="Models\ProductionCompany.cs" />
+    <Compile Include="Parsing\AlternativePersonNameParser.cs" />
     <Compile Include="Parsing\AlternativeProductionTitleParser.cs" />
-    <Compile Include="LineParser.cs" />
+    <Compile Include="ILineParser.cs" />
     <Compile Include="Models\AlternativeProductionTitle.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\Person.cs" />

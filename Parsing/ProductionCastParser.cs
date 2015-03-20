@@ -3,7 +3,7 @@ using DB.Models;
 
 namespace DB.Parsing
 {
-    public sealed class ProductionCastParser : LineParser<ProductionCast>
+    public sealed class ProductionCastParser : ILineParser<ProductionCast>
     {
         public string FileName
         {
