@@ -1,7 +1,7 @@
 ﻿namespace DB
 {
     public interface ILineParser<out T>
-        where T : class
+        where T : IDbModel
     {
         string FileName { get; }
         T Parse( string[] values );
