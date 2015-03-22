@@ -9,7 +9,7 @@
 
         public void InsertIntoDb()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
     }
 }

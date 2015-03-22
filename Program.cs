@@ -12,6 +12,7 @@ namespace DB
     {
         // Debug messages will be printed every time this number of lines is parsed
         private const int ReportPeriod = 10000;
+        private const int MaxErrors = 10;
 
         // All CSV files must be in that folder, without renaming them
         private const string CsvRootPath =
@@ -27,6 +28,8 @@ namespace DB
                 //new CharacterParser(),
                 //new PersonParser()
                 //new ProductionCastParser(),
+                //new PersonParser(),
+                //new ProductionCastParser()
                 //new CompanyParser(),
                 //new ProductionCompanyParser(),
                 //new AlternativePersonNameParser(),
@@ -63,11 +66,16 @@ namespace DB
                 {
                     Debug.WriteLine( "[{0}] Done with {1}.", parser.FileName, lineNumber );
                 }
+
+                if ( errors.Count >= MaxErrors )
+                {
+                    break;
+                }
             }
 
             if ( errors.Count > 0 )
             {
-                throw new Exception( "Parse errors." + Environment.NewLine + string.Join( Environment.NewLine, errors ) );
+                Console.WriteLine( "Parse errors." + Environment.NewLine + string.Join( Environment.NewLine, errors ) );
             }
         }
 
