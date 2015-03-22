@@ -18,7 +18,8 @@ CREATE TABLE PersonSpouse (
 
 CREATE TABLE Person (
     Id INT NOT NULL,
-    Name NVARCHAR (MAX) NOT NULL,
+    FirstName NVARCHAR (MAX) NOT NULL,
+    LastName NVARCHAR (MAX),
     Gender NCHAR (1),
     Trivia NVARCHAR (MAX),
     Quotes NVARCHAR (MAX),
@@ -47,10 +48,11 @@ CREATE TABLE Production (
     ReleaseYear INT,
     Genre NVARCHAR(12),
     PRIMARY KEY (Id),
-    CHECK (Genre IN ('Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 
-                     'Documentary', 'Drama', 'Family', 'Fantasy', 'FilmNoir', 'GameShow',
-                     'History', 'Horror', 'Music', 'Mystery', 'News', 'RealityTV',
-                     'Romance', 'SciFi', 'Short', 'Sport', 'TalkShow', 'Thriller', 'War',
+    CHECK (Genre IN ('Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 
+                     'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 
+                     'FilmNoir', 'GameShow', 'History', 'Horror', 'Music', 
+                     'Musical', 'Mystery', 'News', 'RealityTV', 'Romance', 
+                     'SciFi', 'Short', 'Sport', 'TalkShow', 'Thriller', 'War',
                      'Western'))
 );
 
@@ -109,8 +111,10 @@ CREATE TABLE ProductionCast (
     FOREIGN KEY (ProductionId) REFERENCES Production(Id),
     FOREIGN KEY (PersonId) REFERENCES Person(Id),
     FOREIGN KEY (CharacterId) REFERENCES ProductionCharacter(Id),
-    CHECK (CastRole IN ('Actor', 'Actress', 'Cinematographer', 'Composer', 'CostumeDesigner', 'Director', 
-                        'Editor', 'MiscellaneousCrew', 'Producer', 'ProductionDesigner', 'Writer'))
+    CHECK (CastRole IN ('Actor', 'Actress', 'Cinematographer', 'Composer', 
+                        'CostumeDesigner', 'Director', 'Editor', 
+                        'MiscellaneousCrew', 'Producer', 
+                        'ProductionDesigner', 'Writer'))
 );
 
 -- Companies
@@ -120,7 +124,8 @@ CREATE TABLE Company (
     Name NVARCHAR(MAX) NOT NULL,
     CountryCode NVARCHAR(4),
     PRIMARY KEY (Id)
-    -- No constraint on CountryCode, as ISO-3166 codes change more often than one would think
+    -- No constraint on CountryCode,
+    -- ISO-3166 codes change more often than one would think
 );
 
 CREATE TABLE ProductionCompany (

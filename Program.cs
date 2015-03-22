@@ -31,14 +31,14 @@ namespace DB
             await Database.DisableReferentialIntegrityAsync();
 
             var parsers = new ILineParser<IDatabaseModel>[] {
-                new AlternativePersonNameParser(),
-                new AlternativeProductionTitleParser(),
-                new CharacterParser(),
-                new CompanyParser(),
+                //new AlternativePersonNameParser(),
+                //new AlternativeProductionTitleParser(),
+                //new CharacterParser(),
+                //new CompanyParser(),
                 new PersonParser(),
-                new ProductionParser(),
-                new ProductionCastParser(),
-                new ProductionCompanyParser(),
+                //new ProductionParser(),
+                //new ProductionCastParser(),
+                //new ProductionCompanyParser(),
             };
 
             foreach ( var model in parsers.AsParallel().Select( ParseCsv ).SelectMany( x => x ) )

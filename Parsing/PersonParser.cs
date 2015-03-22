@@ -15,10 +15,12 @@ namespace DB.Parsing
 
         public Person Parse( string[] values )
         {
+            Tuple<string, string> firstLast = ParseUtility.Get( values[1], ParseName, "Name" );
             return new Person
             {
                 Id = ParseUtility.Get( values[0], int.Parse, "ID" ),
-                Name = ParseUtility.Get( values[1], "Name" ),
+                FirstName = firstLast.Item1,
+                LastName = firstLast.Item2,
                 Gender = ParseUtility.Map( values[2], ParseGender ),
                 Trivia = ParseUtility.Map( values[3] ),
                 Quotes = ParseUtility.Map( values[4] ),
@@ -44,6 +46,27 @@ namespace DB.Parsing
                 default:
                     throw new InvalidOperationException( "Unknown gender: " + gender );
             }
+        }
+
+        private static Tuple<string, string> ParseName( string name )
+        {
+            if ( name == "Lee, Mido, Chia Jung" )
+            {
+                name = "Chia Jung Lee, Mido";
+            }
+
+            string[] parts = name.Split( ',' ).Where( s => !string.IsNullOrWhiteSpace( s ) ).ToArray();
+
+            if ( parts.Length == 1 )
+            {
+                return Tuple.Create( name, (string) null );
+            }
+            if ( parts.Length == 2 )
+            {
+                return Tuple.Create( parts[1], parts[0] );
+            }
+
+            throw new Exception( "Too many parts" );
         }
 
         private static decimal ParseHeight( string height )
@@ -146,6 +169,8 @@ namespace DB.Parsing
 
         private static PersonSpouseInfo ParseSpouseInfo( string info )
         {
+            // and you thought the height was dragons...
+
             string orig = info;
             info = info.Trim();
             info = info.Replace( "  ", " " );
