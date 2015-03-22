@@ -8,13 +8,14 @@ namespace DB
     public static class DatabaseConnection
     {
         private const string ConnectionString =
-            @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\Oswald\Documents\GitHub\SOV_DB\DB.mdf;Integrated Security=True";
+            //  @"Data Source=(LocalDB)\v11.0;Integrated Security=True"; // SQL Server 2012
+            @"Data Source=(LocalDB)\mssqllocaldb;Integrated Security=True"; // SQL Server 2014
 
         public static async Task<SqlDataReader> ExecuteReaderAsync( string queryText, IDictionary<string, object> parameters )
         {
             using ( var connection = new SqlConnection( ConnectionString ) )
             {
-                connection.Open();
+                await connection.OpenAsync();
                 var cmd = new SqlCommand( queryText, connection );
 
                 foreach ( var parameter in parameters )
@@ -30,7 +31,7 @@ namespace DB
         {
             using ( var connection = new SqlConnection( ConnectionString ) )
             {
-                connection.Open();
+                await connection.OpenAsync();
                 var cmd = new SqlCommand( queryText, connection );
 
                 foreach ( var parameter in parameters )
@@ -44,6 +45,15 @@ namespace DB
                 {
                     throw new Exception( "Couldn't insert stuff." );
                 }
+            }
+        }
+
+        public static async Task ExecuteCreateAsync( string text )
+        {
+            using ( var connection = new SqlConnection( ConnectionString ) )
+            {
+                await connection.OpenAsync();
+                await new SqlCommand( text, connection ).ExecuteNonQueryAsync();
             }
         }
     }

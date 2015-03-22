@@ -10,15 +10,17 @@ namespace DB
     public static class Program
     {
         // Debug messages will be printed every time this number of lines is parsed
-        private const int ReportPeriod = 10000;
+        private const int ReportPeriod = 100000;
 
         // All CSV files must be in that folder, without renaming them
         private const string CsvRootPath =
-            @"C:\Users\Oswald\Downloads\Movies"; // Oswald
-        //@"X:\Documents\EPFL\DB\Project dataset"; // Solal
+            //@"C:\Users\Oswald\Downloads\Movies"; // Oswald
+            @"X:\Documents\EPFL\DB\Project dataset"; // Solal
 
         private static void Main()
         {
+            DatabaseConnection.ExecuteCreateAsync( File.ReadAllText( "create_db.sql" ) ).Wait();
+
             ParseCsvs(
                 //new AlternativeProductionTitleParser(),
                 //new CharacterParser(),
@@ -39,8 +41,7 @@ namespace DB
             Task.WaitAll( parsers.Select( parser => Task.Run( () => ParseCsv( parser ) ) ).ToArray() );
         }
 
-        private static void ParseCsv<T>( ILineParser<T> parser )
-            where T : IDatabaseModel
+        private static void ParseCsv( ILineParser<IDatabaseModel> parser )
         {
             var errors = new List<string>();
 
