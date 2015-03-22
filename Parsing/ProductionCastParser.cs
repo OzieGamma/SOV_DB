@@ -16,7 +16,7 @@ namespace DB.Parsing
             {
                 ProductionId = ParseUtility.Get( values[0], long.Parse, "ProductionID" ),
                 PersonId = ParseUtility.Get( values[1], long.Parse, "PersonID" ),
-                CharacterId = ParseUtility.GetOrDefault( values[2], long.Parse ),
+                CharacterId = ParseUtility.Map( values[2], long.Parse ),
                 Role = ParseUtility.Get( values[3], ParseRole, "Role" )
             };
         }
@@ -30,12 +30,6 @@ namespace DB.Parsing
 
                 case "actress":
                     return CharacterRole.Actress;
-
-                case "producer":
-                    return CharacterRole.Producer;
-
-                case "writer":
-                    return CharacterRole.Writer;
 
                 case "cinematographer":
                     return CharacterRole.Cinematographer;
@@ -55,8 +49,14 @@ namespace DB.Parsing
                 case "miscellaneous crew":
                     return CharacterRole.MiscellaneousCrew;
 
+                case "producer":
+                    return CharacterRole.Producer;
+
                 case "production designer":
                     return CharacterRole.ProductionDesigner;
+
+                case "writer":
+                    return CharacterRole.Writer;
 
                 default:
                     throw new InvalidOperationException( "Unknown character role: " + role );

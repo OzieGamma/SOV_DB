@@ -16,14 +16,21 @@ namespace DB.Parsing
             return selector( s );
         }
 
-        public static string GetOrDefault( string s )
+        public static string Map( string s )
         {
             return IsEmpty( s ) ? null : s;
         }
 
-        public static T GetOrDefault<T>( string s, Func<string, T> selector )
+        public static T? Map<T>( string s, Func<string, T> selector )
+            where T : struct
         {
-            return IsEmpty( s ) ? default( T ) : selector( s );
+            return IsEmpty( s ) ? (T?) null : selector( s );
+        }
+
+        public static T MapRef<T>( string s, Func<string, T> selector )
+            where T : class
+        {
+            return IsEmpty( s ) ? null : selector( s );
         }
 
         private static bool IsEmpty( string s )

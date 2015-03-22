@@ -14,6 +14,6 @@ namespace DB.Models
         public string BirthName;
         public string ShortBio;
         public PersonSpouseInfo Spouse;
-        public decimal Height;
+        public decimal? Height;
     }
 }

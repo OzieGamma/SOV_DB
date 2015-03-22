@@ -55,8 +55,11 @@
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\CharacterRole.cs" />
     <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\MovieType.cs" />
+    <Compile Include="Models\Production.cs" />
     <Compile Include="Models\ProductionCast.cs" />
     <Compile Include="Models\ProductionCompany.cs" />
+    <Compile Include="Models\ProductionGenre.cs" />
     <Compile Include="Parsing\AlternativePersonNameParser.cs" />
     <Compile Include="Parsing\AlternativeProductionTitleParser.cs" />
     <Compile Include="ILineParser.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Parsing\ProductionCastParser.cs" />
     <Compile Include="Models\ProductionCompanyKind.cs" />
     <Compile Include="Parsing\ProductionCompanyParser.cs" />
+    <Compile Include="Parsing\ProductionParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

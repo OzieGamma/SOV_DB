@@ -27,7 +27,8 @@ namespace DB
                 //new ProductionCastParser(),
                 //new CompanyParser(),
                 //new ProductionCompanyParser(),
-                new AlternativePersonNameParser()
+                //new AlternativePersonNameParser(),
+                new ProductionParser()
             );
             Console.WriteLine( "Done." );
             Console.Read();

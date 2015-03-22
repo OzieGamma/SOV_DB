@@ -14,7 +14,7 @@ namespace DB.Parsing
             return new Company
             {
                 Id = ParseUtility.Get( values[0], long.Parse, "ID" ),
-                CountryCode = ParseUtility.GetOrDefault( values[1], ParseCountryCode ),
+                CountryCode = ParseUtility.MapRef( values[1], ParseCountryCode ),
                 Name = ParseUtility.Get( values[2], "Name" )
             };
         }

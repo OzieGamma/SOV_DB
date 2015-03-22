@@ -19,15 +19,15 @@ namespace DB.Parsing
             {
                 Id = ParseUtility.Get( values[0], long.Parse, "ID" ),
                 Name = ParseUtility.Get( values[1], "Name" ),
-                Gender = ParseUtility.GetOrDefault( values[2], ParseGender ),
-                Trivia = ParseUtility.GetOrDefault( values[3] ),
-                Quotes = ParseUtility.GetOrDefault( values[4] ),
-                BirthDate = ParseUtility.GetOrDefault( values[5], ParseDate ),
-                DeathDate = ParseUtility.GetOrDefault( values[6], ParseDate ),
-                BirthName = ParseUtility.GetOrDefault( values[7] ),
-                ShortBio = ParseUtility.GetOrDefault( values[8] ),
-                Spouse = ParseUtility.GetOrDefault( values[9], ParseSpouseInfo ),
-                Height = ParseUtility.GetOrDefault( values[10], ParseHeight )
+                Gender = ParseUtility.Map( values[2], ParseGender ),
+                Trivia = ParseUtility.Map( values[3] ),
+                Quotes = ParseUtility.Map( values[4] ),
+                BirthDate = ParseUtility.Map( values[5], ParseDate ),
+                DeathDate = ParseUtility.Map( values[6], ParseDate ),
+                BirthName = ParseUtility.Map( values[7] ),
+                ShortBio = ParseUtility.Map( values[8] ),
+                Spouse = ParseUtility.MapRef( values[9], ParseSpouseInfo ),
+                Height = ParseUtility.Map( values[10], ParseHeight )
             };
         }
 
@@ -48,6 +48,8 @@ namespace DB.Parsing
 
         private static decimal ParseHeight( string height )
         {
+            // HERE BE DRAGONS!
+
             string original = height.Trim();
             string s = height.Trim();
             decimal realSize = -1.0m;

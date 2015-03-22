@@ -4,14 +4,14 @@
     {
         Actor,
         Actress,
-        Producer,
-        Writer,
         Cinematographer,
         Composer,
         CostumeDesigner,
         Director,
         Editor,
         MiscellaneousCrew,
-        ProductionDesigner
+        Producer,
+        ProductionDesigner,
+        Writer,
     }
 }

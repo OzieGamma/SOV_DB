@@ -4,7 +4,7 @@
     {
         public long ProductionId;
         public long PersonId;
-        public long CharacterId;
+        public long? CharacterId;
         public CharacterRole Role;
     }
 }
