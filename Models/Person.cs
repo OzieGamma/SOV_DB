@@ -32,7 +32,7 @@
 
             if (this.Spouse != null)
             {
-                parameters["@SpouseName"] = this.Spouse.Name ?? "NULL";
+                parameters["@SpouseName"] = this.Spouse.Name;
                 parameters["@SpouseIsInDatabase"] = this.Spouse.IsInDatabase;
                 parameters["@SpouseBeginDate"] = this.Spouse.BeginDate;
                 parameters["@SpouseEndDate"] = this.Spouse.EndDate;
