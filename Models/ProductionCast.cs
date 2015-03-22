@@ -1,10 +1,10 @@
 ﻿namespace DB.Models
 {
-    public sealed class ProductionCast : IDbModel
+    public sealed class ProductionCast : IDatabaseModel
     {
-        public long ProductionId;
-        public long PersonId;
-        public long? CharacterId;
+        public int ProductionId;
+        public int PersonId;
+        public int? CharacterId;
         public CharacterRole Role;
 
         public void InsertIntoDb()

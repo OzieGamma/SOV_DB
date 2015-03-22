@@ -14,9 +14,9 @@ namespace DB.Parsing
         {
             return new ProductionCast
             {
-                ProductionId = ParseUtility.Get( values[0], long.Parse, "ProductionID" ),
-                PersonId = ParseUtility.Get( values[1], long.Parse, "PersonID" ),
-                CharacterId = ParseUtility.Map( values[2], long.Parse ),
+                ProductionId = ParseUtility.Get( values[0], int.Parse, "ProductionID" ),
+                PersonId = ParseUtility.Get( values[1], int.Parse, "PersonID" ),
+                CharacterId = ParseUtility.Map( values[2], int.Parse ),
                 Role = ParseUtility.Get( values[3], ParseRole, "Role" )
             };
         }

@@ -34,13 +34,13 @@ namespace DB
             Console.Read();
         }
 
-        private static void ParseCsvs( params ILineParser<IDbModel>[] parsers )
+        private static void ParseCsvs( params ILineParser<IDatabaseModel>[] parsers )
         {
             Task.WaitAll( parsers.Select( parser => Task.Run( () => ParseCsv( parser ) ) ).ToArray() );
         }
 
         private static void ParseCsv<T>( ILineParser<T> parser )
-            where T : IDbModel
+            where T : IDatabaseModel
         {
             var errors = new List<string>();
 

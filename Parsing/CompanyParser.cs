@@ -13,7 +13,7 @@ namespace DB.Parsing
         {
             return new Company
             {
-                Id = ParseUtility.Get( values[0], long.Parse, "ID" ),
+                Id = ParseUtility.Get( values[0], int.Parse, "ID" ),
                 CountryCode = ParseUtility.MapRef( values[1], ParseCountryCode ),
                 Name = ParseUtility.Get( values[2], "Name" )
             };

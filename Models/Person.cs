@@ -1,11 +1,11 @@
-﻿namespace DB.Models
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-    public sealed class Person : IDbModel
+namespace DB.Models
+{
+    public sealed class Person : IDatabaseModel
     {
-        public long Id;
+        public int Id;
         public string Name;
         public Gender? Gender;
         public string Trivia;
@@ -19,49 +19,45 @@
 
         public async void InsertIntoDb()
         {
-            var parameters = new Dictionary<string, object>();
-            parameters["@Id"] = this.Id;
-            parameters["@Name"] = this.Name;
-            parameters["@Gender"] = this.Gender == Models.Gender.Male ? "M" : "F";
-            parameters["@Trivia"] = this.Trivia;
-            parameters["@Quotes"] = this.Quotes;
-            parameters["@BirthDate"] = this.BirthDate;
-            parameters["@DeathDate"] = this.DeathDate;
-            parameters["@BirthName"] = this.BirthName;
-            parameters["@ShortBio"] = this.ShortBio;
-
-            if ( this.Spouse != null )
+            if ( Spouse != null )
             {
-                parameters["@SpouseName"] = this.Spouse.Name ?? "NULL";
-                parameters["@SpouseIsInDatabase"] = this.Spouse.IsInDatabase;
-                parameters["@SpouseBeginDate"] = this.Spouse.BeginDate;
-                parameters["@SpouseEndDate"] = this.Spouse.EndDate;
-                parameters["@SpouseEndNotes"] = this.Spouse.EndNotes;
-                parameters["@SpouseChildrenCount"] = this.Spouse.ChildrenCount;
-                parameters["@SpouseChildrenDescription"] = this.Spouse.ChildrenDescription;
+                // We do something a bit weird, and keep the person ID for the spouse ID, since in the date there is only one.
+                // Since Person.SpouseId is a foreign key, we need to insert the spouse first
+                await DatabaseConnection.ExecuteNonQueryAsync(
+                    @"INSERT INTO PersonSpouse(Id, Name, IsInDatabase, BeginDate, EndDate, EndNotes, ChildrenCount, ChildrenDescription)
+                      VALUES (@Id, @Name, @IsInDatabase, @BeginDate, @EndDate, @EndNotes, @ChildrenCount, @ChildrenDescription);",
+                    new Dictionary<string, object>
+                    {
+                        { "@Id", Id },
+                        { "@Name", Spouse.Name },
+                        { "@IsInDatabase", Spouse.IsInDatabase },
+                        { "@BeginDate", Spouse.BeginDate },
+                        { "@EndDate", Spouse.EndDate },
+                        { "@EndNotes", Spouse.EndNotes },
+                        { "@ChildrenCount", Spouse.ChildrenCount },
+                        { "@ChildrenDescription", Spouse.ChildrenDescription }
+                    }
+                );
             }
-            else
-            {
-                parameters["@SpouseName"] = null;
-                parameters["@SpouseIsInDatabase"] = null;
-                parameters["@SpouseBeginDate"] = null;
-                parameters["@SpouseEndDate"] = null;
-                parameters["@SpouseEndNotes"] = null;
-                parameters["@SpouseChildrenCount"] = null;
-                parameters["@SpouseChildrenDescription"] = null;
-            }
-            parameters["@Height"] = this.Height;
 
-            int rowsInserted =
-                await
-                DBConnection.ExecuteNonQuery(
-                    @"INSERT INTO dbo.Person VALUES (@Id, @Name, @Gender, @Trivia, @Quotes, @BirthDate, @DeathDate, @BirthName, @ShortBio, @SpouseName, @SpouseIsInDatabase, @SpouseBeginDate, @SpouseEndDate, @SpouseEndNotes, @SpouseChildrenCount, @SpouseChildrenDescription, @Height);",
-                    parameters );
-
-            if ( rowsInserted == 0 )
-            {
-                throw new Exception( "Could not insert" );
-            }
+            await DatabaseConnection.ExecuteNonQueryAsync(
+                @"INSERT INTO Person(Id, Name, Gender, Trivia, Quotes, BirthDate, DeathDate, BirthName, ShortBio, Height, SpouseId)
+                  VALUES (@Id, @Name, @Gender, @Trivia, @Quotes, @BirthDate, @DeathDate, @BirthName, @ShortBio, @Height, @SpouseId);",
+                new Dictionary<string, object>
+                {
+                    { "@Id", Id },
+                    { "@Name", Name },
+                    { "@Gender", Gender == null ? null : Gender == Models.Gender.Male ? "M" : "F" },
+                    { "@Trivia", Trivia },
+                    { "@Quotes", Quotes },
+                    { "@BirthDate", BirthDate },
+                    { "@DeathDate", DeathDate },
+                    { "@BirthName", BirthName },
+                    { "@ShortBio", ShortBio },
+                    { "@Height", Height },
+                    { "@SpouseId", Spouse == null ? (int?) null : Id }
+                }
+            );
         }
     }
 }

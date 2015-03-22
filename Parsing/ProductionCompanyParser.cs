@@ -15,8 +15,8 @@ namespace DB.Parsing
             // values[0] is the ID, we discard it
             return new ProductionCompany
             {
-                CompanyId = ParseUtility.Get( values[1], long.Parse, "CompanyID" ),
-                ProductionId = ParseUtility.Get( values[2], long.Parse, "ProductionID" ),
+                CompanyId = ParseUtility.Get( values[1], int.Parse, "CompanyID" ),
+                ProductionId = ParseUtility.Get( values[2], int.Parse, "ProductionID" ),
                 Kind = ParseUtility.Get( values[3], ParseKind, "Kind" )
             };
         }

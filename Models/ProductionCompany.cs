@@ -1,9 +1,9 @@
 ﻿namespace DB.Models
 {
-    public sealed class ProductionCompany : IDbModel
+    public sealed class ProductionCompany : IDatabaseModel
     {
-        public long ProductionId;
-        public long CompanyId;
+        public int ProductionId;
+        public int CompanyId;
         public ProductionCompanyKind Kind;
 
         public void InsertIntoDb()

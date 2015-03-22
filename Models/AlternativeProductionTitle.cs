@@ -1,8 +1,8 @@
 ﻿namespace DB.Models
 {
-    public sealed class AlternativeProductionTitle : IDbModel
+    public sealed class AlternativeProductionTitle : IDatabaseModel
     {
-        public long ProductionId;
+        public int ProductionId;
         public string Title;
 
         public void InsertIntoDb()

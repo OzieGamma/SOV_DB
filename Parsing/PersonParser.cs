@@ -17,7 +17,7 @@ namespace DB.Parsing
         {
             return new Person
             {
-                Id = ParseUtility.Get( values[0], long.Parse, "ID" ),
+                Id = ParseUtility.Get( values[0], int.Parse, "ID" ),
                 Name = ParseUtility.Get( values[1], "Name" ),
                 Gender = ParseUtility.Map( values[2], ParseGender ),
                 Trivia = ParseUtility.Map( values[3] ),

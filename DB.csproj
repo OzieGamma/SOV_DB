@@ -50,12 +50,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBConnection.cs" />
-    <Compile Include="IDbModel.cs" />
+    <Compile Include="DatabaseConnection.cs" />
+    <Compile Include="IDatabaseModel.cs" />
     <Compile Include="Models\AlternativePersonName.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\CharacterRole.cs" />
@@ -109,13 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="create_db.sql" />
-    <Content Include="DB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>DB.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 namespace DB
 {
-    public interface IDbModel
+    public interface IDatabaseModel
     {
         void InsertIntoDb();
     }

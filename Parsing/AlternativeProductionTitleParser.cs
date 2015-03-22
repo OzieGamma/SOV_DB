@@ -14,7 +14,7 @@ namespace DB.Parsing
             // values[0] is the ID, we discard it
             return new AlternativeProductionTitle
             {
-                ProductionId = ParseUtility.Get( values[1], long.Parse, "ProductionID" ),
+                ProductionId = ParseUtility.Get( values[1], int.Parse, "ProductionID" ),
                 Title = ParseUtility.Get( values[2], "Title" )
             };
         }

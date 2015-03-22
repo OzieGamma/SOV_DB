@@ -14,7 +14,7 @@ namespace DB.Parsing
             // values [0] is the ID, which we discard
             return new AlternativePersonName
             {
-                PersonID = ParseUtility.Get( values[1], long.Parse, "PersonID" ),
+                PersonId = ParseUtility.Get( values[1], int.Parse, "PersonID" ),
                 Name = ParseUtility.Get( values[2], "Name" )
             };
         }

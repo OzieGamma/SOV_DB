@@ -13,7 +13,7 @@ namespace DB.Parsing
         {
             return new Character
             {
-                Id = ParseUtility.Get( values[0], long.Parse, "ID" ),
+                Id = ParseUtility.Get( values[0], int.Parse, "ID" ),
                 Name = ParseUtility.Get( values[1], "Name" )
             };
         }

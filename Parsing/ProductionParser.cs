@@ -12,7 +12,7 @@ namespace DB.Parsing
 
         public Production Parse( string[] values )
         {
-            long id = ParseUtility.Get( values[0], long.Parse, "ID" );
+            int id = ParseUtility.Get( values[0], int.Parse, "ID" );
             string title = ParseUtility.Get( values[1], "Title" );
             int? year = ParseUtility.Map( values[2], int.Parse );
             string type = ParseUtility.Get( values[7], "Type" );
@@ -38,7 +38,7 @@ namespace DB.Parsing
                         Id = id,
                         Title = title,
                         Year = year,
-                        SeriesID = ParseUtility.Get( values[3], long.Parse, "SeriesID" ),
+                        SeriesID = ParseUtility.Get( values[3], int.Parse, "SeriesID" ),
                         SeasonNumber = ParseUtility.Map( values[4], int.Parse ),
                         EpisodeNumber = ParseUtility.Map( values[5], int.Parse )
                     };

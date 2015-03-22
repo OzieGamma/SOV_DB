@@ -1,8 +1,8 @@
 ﻿namespace DB.Models
 {
-    public sealed class Company : IDbModel
+    public sealed class Company : IDatabaseModel
     {
-        public long Id;
+        public int Id;
         public string CountryCode;
         public string Name;
 

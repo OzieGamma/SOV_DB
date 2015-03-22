@@ -1,8 +1,8 @@
 ﻿namespace DB.Models
 {
-    public sealed class AlternativePersonName : IDbModel
+    public sealed class AlternativePersonName : IDatabaseModel
     {
-        public long PersonID;
+        public int PersonId;
         public string Name;
 
         public void InsertIntoDb()

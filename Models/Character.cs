@@ -1,8 +1,8 @@
 ﻿namespace DB.Models
 {
-    public sealed class Character : IDbModel
+    public sealed class Character : IDatabaseModel
     {
-        public long Id;
+        public int Id;
         public string Name;
 
         public void InsertIntoDb()

@@ -2,7 +2,7 @@
 {
     public abstract class Production
     {
-        public long Id;
+        public int Id;
         public string Title;
         public int? Year;
     }
