@@ -1,4 +1,8 @@
-﻿-- Person, alt names, and spouses
+﻿-- Disable referential integrity on all tables, and drop them. Not pretty, but it works. 
+EXEC sp_MSforeachtable "DECLARE @name NVARCHAR (MAX); SET @name = PARSENAME('?', 1); EXEC sp_MSdropconstraints @name";
+EXEC sp_MSforeachtable "DROP TABLE ?";
+
+-- Person, alt names, and spouses
 
 CREATE TABLE PersonSpouse (
     Id INT NOT NULL,
