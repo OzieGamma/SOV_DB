@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DB.Models
 {
@@ -17,13 +18,31 @@ namespace DB.Models
         public PersonSpouseInfo Spouse;
         public decimal? Height;
 
-        public async void InsertIntoDb()
+        public async Task InsertInDatabaseAsync()
         {
+            await Database.ExecuteNonQueryAsync(
+                @"INSERT INTO Person(Id, Name, Gender, Trivia, Quotes, BirthDate, DeathDate, BirthName, ShortBio, Height, SpouseId)
+                  VALUES (@Id, @Name, @Gender, @Trivia, @Quotes, @BirthDate, @DeathDate, @BirthName, @ShortBio, @Height, @SpouseId);",
+                new Dictionary<string, object>
+                {
+                    { "@Id", Id },
+                    { "@Name", Name },
+                    { "@Gender", Gender == null ? null : Gender == Models.Gender.Male ? "M" : "F" },
+                    { "@Trivia", Trivia },
+                    { "@Quotes", Quotes },
+                    { "@BirthDate", BirthDate == null ? null : BirthDate.Value.ToString( "yyyyMMdd" ) },
+                    { "@DeathDate", DeathDate == null ? null : DeathDate.Value.ToString( "yyyyMMdd" ) },
+                    { "@BirthName", BirthName },
+                    { "@ShortBio", ShortBio },
+                    { "@Height", Height },
+                    { "@SpouseId", Spouse == null ? (int?) null : Id }
+                }
+            );
+
             if ( Spouse != null )
             {
                 // We do something a bit weird, and keep the person ID for the spouse ID, since in the date there is only one.
-                // Since Person.SpouseId is a foreign key, we need to insert the spouse first
-                await DatabaseConnection.ExecuteNonQueryAsync(
+                await Database.ExecuteNonQueryAsync(
                     @"INSERT INTO PersonSpouse(Id, Name, IsInDatabase, BeginDate, EndDate, EndNotes, ChildrenCount, ChildrenDescription)
                       VALUES (@Id, @Name, @IsInDatabase, @BeginDate, @EndDate, @EndNotes, @ChildrenCount, @ChildrenDescription);",
                     new Dictionary<string, object>
@@ -39,25 +58,6 @@ namespace DB.Models
                     }
                 );
             }
-
-            await DatabaseConnection.ExecuteNonQueryAsync(
-                @"INSERT INTO Person(Id, Name, Gender, Trivia, Quotes, BirthDate, DeathDate, BirthName, ShortBio, Height, SpouseId)
-                  VALUES (@Id, @Name, @Gender, @Trivia, @Quotes, @BirthDate, @DeathDate, @BirthName, @ShortBio, @Height, @SpouseId);",
-                new Dictionary<string, object>
-                {
-                    { "@Id", Id },
-                    { "@Name", Name },
-                    { "@Gender", Gender == null ? null : Gender == Models.Gender.Male ? "M" : "F" },
-                    { "@Trivia", Trivia },
-                    { "@Quotes", Quotes },
-                    { "@BirthDate", BirthDate },
-                    { "@DeathDate", DeathDate },
-                    { "@BirthName", BirthName },
-                    { "@ShortBio", ShortBio },
-                    { "@Height", Height },
-                    { "@SpouseId", Spouse == null ? (int?) null : Id }
-                }
-            );
         }
     }
 }

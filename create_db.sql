@@ -1,6 +1,6 @@
 ﻿-- Disable referential integrity on all tables, and drop them. Not pretty, but it works. 
-EXEC sp_MSforeachtable "DECLARE @name NVARCHAR (MAX); SET @name = PARSENAME('?', 1); EXEC sp_MSdropconstraints @name";
-EXEC sp_MSforeachtable "DROP TABLE ?";
+EXEC sp_MSForeachTable "DECLARE @name NVARCHAR (MAX); SET @name = PARSENAME('?', 1); EXEC sp_MSdropconstraints @name";
+EXEC sp_MSForeachTable "DROP TABLE ?";
 
 -- Person, alt names, and spouses
 
@@ -76,7 +76,7 @@ CREATE TABLE Series (
     FOREIGN KEY (ProductionId) REFERENCES Production(Id)
 );
 
-CREATE TABLE Episode (
+CREATE TABLE SeriesEpisode (
     ProductionId INT NOT NULL,
     SeriesId INT NOT NULL,
     SeasonNumber INT,
@@ -88,7 +88,7 @@ CREATE TABLE Episode (
 
 CREATE TABLE AlternativeProductionTitle (
     ProductionId INT NOT NULL,
-    Name NVARCHAR(MAX),
+    Title NVARCHAR(MAX),
     FOREIGN KEY (ProductionId) REFERENCES Production(Id)
 );
 
@@ -104,8 +104,8 @@ CREATE TABLE ProductionCharacter (
 CREATE TABLE ProductionCast (
     ProductionId INT NOT NULL,
     PersonId INT NOT NULL,
-    CharacterId INT NOT NULL,
-    CastRole NVARCHAR(MAX),
+    CharacterId INT,
+    CastRole NVARCHAR(MAX) NOT NULL,
     FOREIGN KEY (ProductionId) REFERENCES Production(Id),
     FOREIGN KEY (PersonId) REFERENCES Person(Id),
     FOREIGN KEY (CharacterId) REFERENCES ProductionCharacter(Id),

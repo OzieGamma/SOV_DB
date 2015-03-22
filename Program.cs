@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using DB.Parsing;
 
 namespace DB
@@ -21,44 +20,50 @@ namespace DB
 
         private static void Main()
         {
-            DatabaseConnection.ExecuteCreateAsync( File.ReadAllText( "create_db.sql" ) ).Wait();
-
-            ParseCsvs(
-                //new AlternativeProductionTitleParser(),
-                //new CharacterParser(),
-                //new PersonParser()
-                //new ProductionCastParser(),
-                //new PersonParser(),
-                //new ProductionCastParser()
-                //new CompanyParser(),
-                //new ProductionCompanyParser(),
-                //new AlternativePersonNameParser(),
-                new ProductionParser()
-            );
-
-            Console.WriteLine( "Done." );
+            Console.WriteLine( "Doing work..." );
+            DoWork();
             Console.Read();
         }
 
-        private static void ParseCsvs( params ILineParser<IDatabaseModel>[] parsers )
+        private static async void DoWork()
         {
-            Task.WaitAll( parsers.Select( parser => Task.Run( () => ParseCsv( parser ) ) ).ToArray() );
+            await Database.ExecuteCreateAsync( File.ReadAllText( "create_db.sql" ) );
+            await Database.DisableReferentialIntegrityAsync();
+
+            var parsers = new ILineParser<IDatabaseModel>[] {
+                new AlternativePersonNameParser(),
+                new AlternativeProductionTitleParser(),
+                new CharacterParser(),
+                new CompanyParser(),
+                new PersonParser(),
+                new ProductionParser(),
+                new ProductionCastParser(),
+                new ProductionCompanyParser(),
+            };
+
+            foreach ( var model in parsers.AsParallel().Select( ParseCsv ).SelectMany( x => x ) )
+            {
+                await model.InsertInDatabaseAsync();
+            }
+
+            Console.WriteLine( "Done." );
         }
 
-        private static void ParseCsv( ILineParser<IDatabaseModel> parser )
+        private static IList<IDatabaseModel> ParseCsv( ILineParser<IDatabaseModel> parser )
         {
-            var errors = new List<string>();
+            var results = new List<IDatabaseModel>();
+            var errors = new List<Exception>();
 
             int lineNumber = 0;
             foreach ( var values in ReadCsv( parser.FileName ) )
             {
                 try
                 {
-                    parser.Parse( values );//.InsertIntoDb();
+                    results.Add( parser.Parse( values ) );
                 }
                 catch ( Exception e )
                 {
-                    errors.Add( string.Format( "[{0}] Exception while parsing line {1}: {2}", parser.FileName, lineNumber, e.Message ) );
+                    errors.Add( e );
                 }
 
                 lineNumber++;
@@ -75,8 +80,10 @@ namespace DB
 
             if ( errors.Count > 0 )
             {
-                Console.WriteLine( "Parse errors." + Environment.NewLine + string.Join( Environment.NewLine, errors ) );
+                throw new AggregateException( errors );
             }
+
+            return results;
         }
 
         private static IEnumerable<string[]> ReadCsv( string fileName )

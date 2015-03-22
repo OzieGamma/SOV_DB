@@ -1,13 +1,23 @@
-﻿namespace DB.Models
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+namespace DB.Models
 {
     public sealed class AlternativeProductionTitle : IDatabaseModel
     {
         public int ProductionId;
         public string Title;
 
-        public void InsertIntoDb()
+        public Task InsertInDatabaseAsync()
         {
-            throw new System.NotImplementedException();
+            return Database.ExecuteNonQueryAsync(
+                @"INSERT INTO AlternativeProductionTitle (ProductionId, Title)
+                  VALUES (@ProductionId, @Title);",
+                new Dictionary<string, object>()
+                {
+                    { "@ProductionId", ProductionId },
+                    { "@Title", Title }
+                }
+            );
         }
     }
 }

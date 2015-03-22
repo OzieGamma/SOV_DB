@@ -1,4 +1,7 @@
-﻿namespace DB.Models
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace DB.Models
 {
     public sealed class Company : IDatabaseModel
     {
@@ -6,9 +9,18 @@
         public string CountryCode;
         public string Name;
 
-        public void InsertIntoDb()
+        public Task InsertInDatabaseAsync()
         {
-            throw new System.NotImplementedException();
+            return Database.ExecuteNonQueryAsync(
+                @"INSERT INTO Company (Id, CountryCode, Name)
+                  VALUES (@Id, @CountryCode, @Name);",
+                new Dictionary<string, object>()
+                {
+                    { "@Id", Id },
+                    { "@CountryCode", CountryCode },
+                    { "@Name", Name }
+                }
+            );
         }
     }
 }
