@@ -38,6 +38,7 @@ namespace DB.Parsing
                         Id = id,
                         Title = title,
                         Year = year,
+                        Genre = genre,
                         SeriesID = ParseUtility.Get( values[3], int.Parse, "SeriesID" ),
                         SeasonNumber = ParseUtility.Map( values[4], int.Parse ),
                         EpisodeNumber = ParseUtility.Map( values[5], int.Parse )

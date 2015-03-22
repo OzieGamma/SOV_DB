@@ -12,6 +12,6 @@
         MiscellaneousCrew,
         Producer,
         ProductionDesigner,
-        Writer,
+        Writer
     }
 }

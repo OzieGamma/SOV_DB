@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace DB
     public static class Program
     {
         // Debug messages will be printed every time this number of lines is parsed
-        private const int ReportPeriod = 100000;
+        private const int ReportPeriod = 10000;
 
         // All CSV files must be in that folder, without renaming them
         private const string CsvRootPath =
@@ -24,12 +25,12 @@ namespace DB
             ParseCsvs(
                 //new AlternativeProductionTitleParser(),
                 //new CharacterParser(),
-                new PersonParser()
+                //new PersonParser()
                 //new ProductionCastParser(),
                 //new CompanyParser(),
                 //new ProductionCompanyParser(),
                 //new AlternativePersonNameParser(),
-                //new ProductionParser()
+                new ProductionParser()
             );
 
             Console.WriteLine( "Done." );
@@ -50,7 +51,7 @@ namespace DB
             {
                 try
                 {
-                    parser.Parse( values ).InsertIntoDb();
+                    parser.Parse( values );//.InsertIntoDb();
                 }
                 catch ( Exception e )
                 {
@@ -60,7 +61,7 @@ namespace DB
                 lineNumber++;
                 if ( lineNumber % ReportPeriod == 0 )
                 {
-                    Console.WriteLine( "[{0}] Done with {1}.", parser.FileName, lineNumber );
+                    Debug.WriteLine( "[{0}] Done with {1}.", parser.FileName, lineNumber );
                 }
             }
 
