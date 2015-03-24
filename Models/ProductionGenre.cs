@@ -17,6 +17,7 @@
         History,
         Horror,
         Music,
+        Musical,
         Mystery,
         News,
         RealityTV,

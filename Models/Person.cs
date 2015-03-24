@@ -7,7 +7,8 @@ namespace DB.Models
     public sealed class Person : IDatabaseModel
     {
         public int Id;
-        public string Name;
+        public string FirstName;
+        public string LastName;
         public Gender? Gender;
         public string Trivia;
         public string Quotes;
@@ -21,12 +22,13 @@ namespace DB.Models
         public async Task InsertInDatabaseAsync()
         {
             await Database.ExecuteNonQueryAsync(
-                @"INSERT INTO Person(Id, Name, Gender, Trivia, Quotes, BirthDate, DeathDate, BirthName, ShortBio, Height, SpouseId)
-                  VALUES (@Id, @Name, @Gender, @Trivia, @Quotes, @BirthDate, @DeathDate, @BirthName, @ShortBio, @Height, @SpouseId);",
+                @"INSERT INTO Person(Id, FirstName, LastName, Gender, Trivia, Quotes, BirthDate, DeathDate, BirthName, ShortBio, Height, SpouseId)
+                  VALUES (@Id, @FirstName, @LastName, @Gender, @Trivia, @Quotes, @BirthDate, @DeathDate, @BirthName, @ShortBio, @Height, @SpouseId);",
                 new Dictionary<string, object>
                 {
                     { "@Id", Id },
-                    { "@Name", Name },
+                    { "@FirstName", FirstName },
+                    { "@LastName", LastName },
                     { "@Gender", Gender == null ? null : Gender == Models.Gender.Male ? "M" : "F" },
                     { "@Trivia", Trivia },
                     { "@Quotes", Quotes },
