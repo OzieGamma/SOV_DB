@@ -7,6 +7,8 @@ using DB.Parsing;
 
 namespace DB
 {
+    using System.Threading.Tasks;
+
     public static class Program
     {
         // Debug messages will be printed every time this number of lines is parsed
@@ -15,8 +17,8 @@ namespace DB
 
         // All CSV files must be in that folder, without renaming them
         private const string CsvRootPath =
-            //@"C:\Users\Oswald\Downloads\Movies"; // Oswald
-            @"X:\Documents\EPFL\DB\Project dataset"; // Solal
+            @"C:\Users\Oswald\Downloads\Movies"; // Oswald
+            //@"X:\Documents\EPFL\DB\Project dataset"; // Solal
 
         private static void Main()
         {
@@ -41,10 +43,7 @@ namespace DB
                 //new ProductionCompanyParser(),
             };
 
-            foreach ( var model in parsers.AsParallel().Select( ParseCsv ).SelectMany( x => x ) )
-            {
-                await model.InsertInDatabaseAsync();
-            }
+            Task.WaitAll(parsers.AsParallel().Select(ParseCsv).SelectMany(x => x).Select(_ => _.InsertInDatabaseAsync()).ToArray());
 
             Console.WriteLine( "Done." );
         }

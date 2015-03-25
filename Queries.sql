@@ -9,4 +9,4 @@ GO
 SELECT Gender, AVG(Height) FROM dbo.Person GROUP BY Gender --WHERE Gender = 'F'
 GO
 
-SELECT TOP(10) * FROM dbo.Person where Gender = 'F'
+SELECT TOP(100) * FROM dbo.Person WHERE NOT Gender = 'M'
