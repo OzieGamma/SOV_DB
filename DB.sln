@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB", "DB.csproj", "{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB", "DB\DB.csproj", "{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBGui", "..\DBGui\DBGui.csproj", "{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBGui", "DBGui\DBGui.csproj", "{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
