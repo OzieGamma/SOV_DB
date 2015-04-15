@@ -18,58 +18,61 @@ namespace DB
         // All CSV files must be in that folder, without renaming them
         private const string CsvRootPath =
             @"C:\Users\Oswald\Downloads\Movies"; // Oswald
-            //@"X:\Documents\EPFL\DB\Project dataset"; // Solal
+        //@"X:\Documents\EPFL\DB\Project dataset"; // Solal
 
         private static void Main()
         {
-            Console.WriteLine( "Doing work..." );
+            Console.WriteLine("Doing work...");
             DoWork();
             Console.Read();
         }
 
         private static async void DoWork()
         {
-            await Database.ExecuteCreateAsync( File.ReadAllText( "create_db.sql" ) );
+            await Database.ExecuteCreateAsync(File.ReadAllText("create_db.sql"));
             await Database.DisableReferentialIntegrityAsync();
 
             var parsers = new ILineParser<IDatabaseModel>[] {
-                //new AlternativePersonNameParser(),
-                //new AlternativeProductionTitleParser(),
-                //new CharacterParser(),
-                //new CompanyParser(),
+                new AlternativePersonNameParser(),
+                new AlternativeProductionTitleParser(),
+                new CharacterParser(),
+                new CompanyParser(),
                 new PersonParser(),
-                //new ProductionParser(),
-                //new ProductionCastParser(),
-                //new ProductionCompanyParser(),
+                new ProductionParser(),
+                new ProductionCastParser(),
+                new ProductionCompanyParser(),
             };
 
-            Task.WaitAll(parsers.AsParallel().Select(ParseCsv).SelectMany(x => x).Select(_ => _.InsertInDatabaseAsync()).ToArray());
+            Task.WaitAll(parsers.AsParallel().SelectMany(ParseCsv).ToArray());
 
-            Console.WriteLine( "Done." );
+            Console.WriteLine("Done.");
         }
 
-        private static IList<IDatabaseModel> ParseCsv( ILineParser<IDatabaseModel> parser )
+        private static IList<Task> ParseCsv(ILineParser<IDatabaseModel> parser)
         {
-            var results = new List<IDatabaseModel>();
             var errors = new List<Exception>();
+            var tasks = new List<Task>();
 
             int lineNumber = 0;
             foreach ( var values in ReadCsv( parser.FileName ) )
             {
                 try
                 {
-                    results.Add( parser.Parse( values ) );
+                    var task = parser.Parse(values).InsertInDatabaseAsync();
+                    if (lineNumber % ReportPeriod == 0)
+                    {
+                        var message = string.Format("[{0}] Done with {1}.", parser.FileName, lineNumber);
+                        task = task.ContinueWith(_ => Console.WriteLine(message));
+                    }
+
+                    tasks.Add(task);
                 }
                 catch ( Exception e )
                 {
                     errors.Add( e );
                 }
 
-                lineNumber++;
-                if ( lineNumber % ReportPeriod == 0 )
-                {
-                    Debug.WriteLine( "[{0}] Done with {1}.", parser.FileName, lineNumber );
-                }
+                lineNumber += 1;
 
                 if ( errors.Count >= MaxErrors )
                 {
@@ -82,20 +85,20 @@ namespace DB
                 throw new AggregateException( errors );
             }
 
-            return results;
+            return tasks;
         }
 
-        private static IEnumerable<string[]> ReadCsv( string fileName )
+        private static IEnumerable<string[]> ReadCsv(string fileName)
         {
-            var path = Path.Combine( CsvRootPath, fileName.ToUpper() + ".csv" );
+            var path = Path.Combine(CsvRootPath, fileName.ToUpper() + ".csv");
 
-            using ( TextReader reader = new StreamReader( File.OpenRead( path ) ) )
+            using (TextReader reader = new StreamReader(File.OpenRead(path)))
             {
                 string line = reader.ReadLine();
 
-                while ( line != null )
+                while (line != null)
                 {
-                    yield return line.Split( '\t' ).Select( val => val.Trim() ).ToArray();
+                    yield return line.Split('\t').Select(val => val.Trim()).ToArray();
                     line = reader.ReadLine();
                 }
             }
