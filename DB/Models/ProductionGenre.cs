@@ -1,0 +1,33 @@
+﻿namespace DB.Models
+{
+    public enum ProductionGenre
+    {
+        Action,
+        Adventure,
+        Animation,
+        Biography,
+        Comedy,
+        Crime,
+        Documentary,
+        Drama,
+        Family,
+        Fantasy,
+        FilmNoir,
+        GameShow,
+        History,
+        Horror,
+        Music,
+        Musical,
+        Mystery,
+        News,
+        RealityTV,
+        Romance,
+        SciFi,
+        Short,
+        Sport,
+        TalkShow,
+        Thriller,
+        War,
+        Western
+    }
+}
