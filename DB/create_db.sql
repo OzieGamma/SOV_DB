@@ -1,8 +1,4 @@
-﻿-- Disable referential integrity on all tables, and drop them. Not pretty, but it works. 
-EXEC sp_MSForeachTable "DECLARE @name NVARCHAR (MAX); SET @name = PARSENAME('?', 1); EXEC sp_MSdropconstraints @name";
-EXEC sp_MSForeachTable "DROP TABLE ?";
-
--- People and their alternative names
+﻿-- People and their alternative names
 
 CREATE TABLE Person (
     Id INT NOT NULL,

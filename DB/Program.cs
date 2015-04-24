@@ -12,16 +12,12 @@ namespace DB
     public static class Program
     {
         // Debug messages will be printed every time this number of lines is parsed
-        private const int ReportPeriod = 10000;
-        private const int MaxErrors = 10;
+        private const int ReportPeriod = 100000;
 
         // All CSV files must be in that folder, without renaming them
         private const string InputFilesPath =
             //@"C:\Users\Oswald\Downloads\Movies"; // Oswald
         @"X:\Documents\EPFL\DB\Project dataset"; // Solal
-
-        private const string OutputFilesPath =
-        @"X:\Documents\EPFL\DB\Project dataset output"; // Solal
 
         private static void Main()
         {
@@ -30,7 +26,7 @@ namespace DB
             Console.Read();
         }
 
-        private static void ConvertCsvs()
+        private static async void ConvertCsvs()
         {
             var parsers = new ILineParser[] {
                 new AlternativePersonNameParser(),
@@ -43,6 +39,12 @@ namespace DB
                 new ProductionCompanyParser(),
             };
 
+            var tempDir = new DirectoryInfo( Path.Combine( Path.GetTempPath(), "DB_CSV" ) );
+            if ( tempDir.Exists )
+            {
+                tempDir.Delete( true );
+            }
+            tempDir.Create();
 
             Parallel.ForEach( parsers, parser =>
             {
@@ -52,10 +54,19 @@ namespace DB
 
                 foreach ( var result in results )
                 {
-                    var path = Path.Combine( Path.GetTempPath(), result.Name + ".csv" );
-                    File.WriteAllLines( path, result.Items, Encoding.UTF8 );
+                    var path = Path.Combine( tempDir.FullName, result.Name );
+                    File.WriteAllLines( path, result.Items, new UTF8Encoding( false ) );
                 }
             } );
+
+            await Database.DisableReferentialIntegrityAsync();
+            await Database.DropAllAsync();
+            await Database.CreateAllAsync();
+            foreach ( var file in tempDir.EnumerateFiles() )
+            {
+                string command = string.Format( "BULK INSERT {0} FROM '{1}'", file.Name, file.FullName );
+                await Database.ExecuteAsync( command );
+            }
 
             Console.WriteLine( "Done." );
         }
@@ -71,12 +82,11 @@ namespace DB
                     yield return value;
                 }
 
+                lineNumber++;
                 if ( lineNumber % ReportPeriod == 0 )
                 {
                     Console.WriteLine( "[{0}] Done with {1}.", parser.FileName, lineNumber );
                 }
-
-                lineNumber++;
             }
         }
 

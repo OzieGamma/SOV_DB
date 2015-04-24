@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace DB.Models
 {
@@ -19,7 +20,7 @@ namespace DB.Models
 
         public override string ToString()
         {
-            return string.Join( "\t", Id, FirstName, LastName, Gender, Trivia, Quotes, BirthDate, DeathDate, BirthName, ShortBio, SpouseInfo, Height );
+            return string.Join( "\t", Id, FirstName, LastName, Gender, Trivia, Quotes, BirthDate.HasValue ? BirthDate.Value.ToString( "O" ) : "", DeathDate.HasValue ? DeathDate.Value.ToString( "O" ) : "", BirthName, ShortBio, SpouseInfo, Height.HasValue ? Height.Value.ToString( CultureInfo.InvariantCulture ) : "" );
         }
     }
 }

@@ -34,6 +34,7 @@ namespace DB.Parsing
 
                     yield return new Series
                     {
+                        ProductionId = id,
                         BeginningYear = fromTo.Item1,
                         EndYear = fromTo.Item2
                     };
