@@ -2,19 +2,7 @@
 EXEC sp_MSForeachTable "DECLARE @name NVARCHAR (MAX); SET @name = PARSENAME('?', 1); EXEC sp_MSdropconstraints @name";
 EXEC sp_MSForeachTable "DROP TABLE ?";
 
--- Person, alt names, and spouses
-
-CREATE TABLE PersonSpouse (
-    Id INT NOT NULL,
-    Name NVARCHAR (MAX),
-    IsInDatabase BIT,
-    BeginDate NVARCHAR (MAX),
-    EndDate NVARCHAR (MAX),
-    EndNotes NVARCHAR (MAX),
-    ChildrenCount INT,
-    ChildrenDescription NVARCHAR (MAX),
-    PRIMARY KEY (Id)
-);
+-- People and their alternative names
 
 CREATE TABLE Person (
     Id INT NOT NULL,
@@ -27,10 +15,9 @@ CREATE TABLE Person (
     DeathDate DATE,
     BirthName NVARCHAR (MAX),
     ShortBio NVARCHAR (MAX),
+    SpouseInfo NVARCHAR (MAX),
     Height NUMERIC (5),
-    SpouseId INT,
     PRIMARY KEY (Id),
-    FOREIGN KEY (SpouseId) REFERENCES PersonSpouse(Id),
     CHECK (Gender IN ('F', 'M'))
 );
 
@@ -40,7 +27,7 @@ CREATE TABLE AlternativePersonName (
     FOREIGN KEY (PersonId) REFERENCES Person(Id)
 );
 
--- Productions: Video games, movies, series, episodes, and alternative names
+-- Productions: Video games, movies, series, episodes, and their alternative names
 
 CREATE TABLE Production (
     Id INT NOT NULL,
@@ -121,8 +108,8 @@ CREATE TABLE ProductionCast (
 
 CREATE TABLE Company (
     Id INT NOT NULL,
-    Name NVARCHAR(MAX) NOT NULL,
     CountryCode NVARCHAR(4),
+    Name NVARCHAR(MAX) NOT NULL,
     PRIMARY KEY (Id)
     -- No constraint on CountryCode,
     -- ISO-3166 codes change more often than one would think

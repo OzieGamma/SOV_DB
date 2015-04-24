@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DB.Parsing;
 
 namespace DB
 {
+    using System.Text;
     using System.Threading.Tasks;
 
     public static class Program
@@ -16,23 +16,23 @@ namespace DB
         private const int MaxErrors = 10;
 
         // All CSV files must be in that folder, without renaming them
-        private const string CsvRootPath =
-            @"C:\Users\Oswald\Downloads\Movies"; // Oswald
-        //@"X:\Documents\EPFL\DB\Project dataset"; // Solal
+        private const string InputFilesPath =
+            //@"C:\Users\Oswald\Downloads\Movies"; // Oswald
+        @"X:\Documents\EPFL\DB\Project dataset"; // Solal
+
+        private const string OutputFilesPath =
+        @"X:\Documents\EPFL\DB\Project dataset output"; // Solal
 
         private static void Main()
         {
-            Console.WriteLine("Doing work...");
-            DoWork();
+            Console.WriteLine( "Doing work..." );
+            ConvertCsvs();
             Console.Read();
         }
 
-        private static async void DoWork()
+        private static void ConvertCsvs()
         {
-            await Database.ExecuteCreateAsync(File.ReadAllText("create_db.sql"));
-            await Database.DisableReferentialIntegrityAsync();
-
-            var parsers = new ILineParser<IDatabaseModel>[] {
+            var parsers = new ILineParser[] {
                 new AlternativePersonNameParser(),
                 new AlternativeProductionTitleParser(),
                 new CharacterParser(),
@@ -43,62 +43,54 @@ namespace DB
                 new ProductionCompanyParser(),
             };
 
-            Task.WaitAll(parsers.AsParallel().SelectMany(ParseCsv).ToArray());
 
-            Console.WriteLine("Done.");
+            Parallel.ForEach( parsers, parser =>
+            {
+                var results = from obj in ParseCsv( parser )
+                              group obj by obj.GetType() into grouped
+                              select new { Name = grouped.Key.Name, Items = from o in grouped select o.ToString() };
+
+                foreach ( var result in results )
+                {
+                    var path = Path.Combine( Path.GetTempPath(), result.Name + ".csv" );
+                    File.WriteAllLines( path, result.Items, Encoding.UTF8 );
+                }
+            } );
+
+            Console.WriteLine( "Done." );
         }
 
-        private static IList<Task> ParseCsv(ILineParser<IDatabaseModel> parser)
+        private static IEnumerable<object> ParseCsv( ILineParser parser )
         {
-            var errors = new List<Exception>();
-            var tasks = new List<Task>();
-
             int lineNumber = 0;
+            var builder = new StringBuilder();
             foreach ( var values in ReadCsv( parser.FileName ) )
             {
-                try
+                foreach ( var value in parser.Parse( values ) )
                 {
-                    var task = parser.Parse(values).InsertInDatabaseAsync();
-                    if (lineNumber % ReportPeriod == 0)
-                    {
-                        var message = string.Format("[{0}] Done with {1}.", parser.FileName, lineNumber);
-                        task = task.ContinueWith(_ => Console.WriteLine(message));
-                    }
-
-                    tasks.Add(task);
-                }
-                catch ( Exception e )
-                {
-                    errors.Add( e );
+                    yield return value;
                 }
 
-                lineNumber += 1;
-
-                if ( errors.Count >= MaxErrors )
+                if ( lineNumber % ReportPeriod == 0 )
                 {
-                    break;
+                    Console.WriteLine( "[{0}] Done with {1}.", parser.FileName, lineNumber );
                 }
+
+                lineNumber++;
             }
-
-            if ( errors.Count > 0 )
-            {
-                throw new AggregateException( errors );
-            }
-
-            return tasks;
         }
 
-        private static IEnumerable<string[]> ReadCsv(string fileName)
+        private static IEnumerable<string[]> ReadCsv( string fileName )
         {
-            var path = Path.Combine(CsvRootPath, fileName.ToUpper() + ".csv");
+            var path = Path.Combine( InputFilesPath, fileName.ToUpper() + ".csv" );
 
-            using (TextReader reader = new StreamReader(File.OpenRead(path)))
+            using ( TextReader reader = new StreamReader( File.OpenRead( path ) ) )
             {
                 string line = reader.ReadLine();
 
-                while (line != null)
+                while ( line != null )
                 {
-                    yield return line.Split('\t').Select(val => val.Trim()).ToArray();
+                    yield return line.Split( '\t' ).Select( val => val.Trim() ).ToArray();
                     line = reader.ReadLine();
                 }
             }

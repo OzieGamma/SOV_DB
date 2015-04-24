@@ -1,19 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using DB.Models;
 
 namespace DB.Parsing
 {
-    public sealed class ProductionCompanyParser : ILineParser<ProductionCompany>
+    public sealed class ProductionCompanyParser : ILineParser
     {
         public string FileName
         {
             get { return "Production_Company"; }
         }
 
-        public ProductionCompany Parse( string[] values )
+        public IEnumerable<object> Parse( string[] values )
         {
             // values[0] is the ID, we discard it
-            return new ProductionCompany
+            yield return new ProductionCompany
             {
                 CompanyId = ParseUtility.Get( values[1], int.Parse, "CompanyID" ),
                 ProductionId = ParseUtility.Get( values[2], int.Parse, "ProductionID" ),

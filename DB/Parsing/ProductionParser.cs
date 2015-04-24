@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using DB.Models;
 
 namespace DB.Parsing
 {
-    public sealed class ProductionParser : ILineParser<Production>
+    public sealed class ProductionParser : ILineParser
     {
         public string FileName
         {
             get { return "Production"; }
         }
 
-        public Production Parse( string[] values )
+        public IEnumerable<object> Parse( string[] values )
         {
             int id = ParseUtility.Get( values[0], int.Parse, "ID" );
             string title = ParseUtility.Get( values[1], "Title" );
@@ -18,50 +19,50 @@ namespace DB.Parsing
             string type = ParseUtility.Get( values[7], "Type" );
             var genre = ParseUtility.Map( values[8], ParseGenre );
 
+            yield return new Production
+            {
+                Id = id,
+                Title = title,
+                Year = year,
+                Genre = genre
+            };
+
             switch ( type )
             {
                 case "tv series":
                     var fromTo = ParseUtility.MapRef( values[6], ParseSeriesYears ) ?? new Tuple<int?, int?>( null, null );
-                    return new Series
+
+                    yield return new Series
                     {
-                        Id = id,
-                        Title = title,
-                        Year = year,
                         BeginningYear = fromTo.Item1,
-                        EndYear = fromTo.Item2,
-                        Genre = genre
+                        EndYear = fromTo.Item2
                     };
+                    break;
 
                 case "episode":
-                    return new SeriesEpisode
+                    yield return new SeriesEpisode
                     {
-                        Id = id,
-                        Title = title,
-                        Year = year,
-                        Genre = genre,
+                        ProductionId = id,
                         SeriesId = ParseUtility.Get( values[3], int.Parse, "SeriesID" ),
                         SeasonNumber = ParseUtility.Map( values[4], int.Parse ),
                         EpisodeNumber = ParseUtility.Map( values[5], int.Parse )
                     };
+                    break;
 
                 case "video game":
-                    return new VideoGame
+                    yield return new VideoGame
                     {
-                        Id = id,
-                        Title = title,
-                        Year = year,
-                        Genre = genre
+                        ProductionId = id
                     };
+                    break;
 
                 default:
-                    return new Movie
+                    yield return new Movie
                     {
-                        Id = id,
-                        Title = title,
-                        Year = year,
-                        Type = ParseMovieType( type ),
-                        Genre = genre
+                        ProductionId = id,
+                        Type = ParseMovieType( type )
                     };
+                    break;
             }
         }
 

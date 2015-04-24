@@ -1,8 +1,10 @@
-﻿namespace DB
+﻿using System.Collections.Generic;
+
+namespace DB
 {
-    public interface ILineParser<out T>
+    public interface ILineParser
     {
         string FileName { get; }
-        T Parse( string[] values );
+        IEnumerable<object> Parse( string[] values );
     }
 }

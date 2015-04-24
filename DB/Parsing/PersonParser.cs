@@ -6,17 +6,17 @@ using DB.Models;
 
 namespace DB.Parsing
 {
-    public sealed class PersonParser : ILineParser<Person>
+    public sealed class PersonParser : ILineParser
     {
         public string FileName
         {
             get { return "Person"; }
         }
 
-        public Person Parse( string[] values )
+        public IEnumerable<object> Parse( string[] values )
         {
             Tuple<string, string> firstLast = ParseUtility.Get( values[1], ParseName, "Name" );
-            return new Person
+            yield return new Person
             {
                 Id = ParseUtility.Get( values[0], int.Parse, "ID" ),
                 FirstName = firstLast.Item1,
@@ -28,7 +28,7 @@ namespace DB.Parsing
                 DeathDate = ParseUtility.Map( values[6], ParseDate ),
                 BirthName = ParseUtility.Map( values[7] ),
                 ShortBio = ParseUtility.Map( values[8] ),
-                Spouse = ParseUtility.MapRef( values[9], ParseSpouseInfo ),
+                SpouseInfo = ParseUtility.Map( values[9] ),
                 Height = ParseUtility.Map( values[10], ParseHeight )
             };
         }
@@ -38,10 +38,10 @@ namespace DB.Parsing
             switch ( gender.ToUpperInvariant() )
             {
                 case "M":
-                    return Gender.Male;
+                    return Gender.M;
 
                 case "F":
-                    return Gender.Female;
+                    return Gender.F;
 
                 default:
                     throw new InvalidOperationException( "Unknown gender: " + gender );
@@ -165,138 +165,6 @@ namespace DB.Parsing
             }
 
             return dto;
-        }
-
-        private static PersonSpouseInfo ParseSpouseInfo( string info )
-        {
-            // and you thought the height was dragons...
-
-            string orig = info;
-            info = info.Trim();
-            info = info.Replace( "  ", " " );
-            var spouseInfo = new PersonSpouseInfo();
-
-            if ( info[0] == '\'' )
-            {
-                info = info.Substring( 1 );
-            }
-
-            if ( info.EndsWith( "'" ) )
-            {
-                spouseInfo.Name = info.Substring( 0, info.Length - 1 );
-                return spouseInfo;
-            }
-
-            int rparenIndex = orig[0] == '\'' ? info.IndexOf( "' (" ) : info.IndexOf( "(" );
-            if ( rparenIndex == -1 ) { rparenIndex = info.IndexOf( "'(" ); }
-            spouseInfo.Name = info.Substring( 0, rparenIndex ).Trim();
-            info = info.Substring( rparenIndex + ( orig[0] == '\'' ? 1 : 0 ) ).Trim();
-
-            spouseInfo.IsInDatabase = info.StartsWith( "(qv)" );
-            if ( spouseInfo.IsInDatabase )
-            {
-                info = info.Substring( "(qv)".Length ).Trim();
-            }
-
-            if ( info.Contains( '-' ) )
-            {
-                info = info.Substring( 1 ).Trim();
-
-                int dateSepIndex = info.IndexOf( '-' );
-
-                if ( info.Contains( "(?-?) - " ) )
-                {
-                    spouseInfo.BeginDate = "?";
-                    info = info.Substring( 7 ).Trim();
-                }
-                else
-                {
-                    spouseInfo.BeginDate = info.Substring( 0, dateSepIndex ).Trim();
-                    info = info.Substring( dateSepIndex + 1 ).Trim();
-                }
-                int endDateIndex = info.IndexOf( ')' );
-                if ( endDateIndex == -1 )
-                {
-                    spouseInfo.EndDate = info.Trim();
-                    info = "";
-                }
-                else
-                {
-                    spouseInfo.EndDate = info.Substring( 0, endDateIndex ).Trim();
-                    info = info.Substring( endDateIndex + 1 ).Trim();
-                }
-            }
-
-            while ( info.StartsWith( ";" ) || info.StartsWith( "," ) || info.StartsWith( ":" ) )
-            {
-                info = info.Substring( 1 ).Trim();
-            }
-
-            var notes = new List<string>();
-            if ( info.Contains( "his death;" ) )
-            {
-                notes.Add( "his death" );
-                info = info.Replace( "his death;", "" ).Trim();
-            }
-            while ( info.Length > 0 && info[0] == '(' )
-            {
-                info = info.Substring( 1 ).Trim();
-                int endNotesIndex = info.IndexOf( ')' );
-                if ( endNotesIndex == -1 )
-                {
-                    notes.Add( info );
-                    info = "";
-                    break;
-                }
-                notes.Add( info.Substring( 0, endNotesIndex ).Trim() );
-                info = info.Substring( endNotesIndex + 1 ).Trim();
-
-                while ( info.StartsWith( ";" ) || info.StartsWith( "," ) || info.StartsWith( ":" ) )
-                {
-                    info = info.Substring( 1 ).Trim();
-                }
-            }
-            if ( notes.Count != 0 )
-            {
-                spouseInfo.EndNotes = string.Join( ", ", notes );
-            }
-
-
-            if ( info.Length > 0 )
-            {
-                spouseInfo.ChildrenDescription = info;
-
-                if ( !info.Any( char.IsDigit ) )
-                {
-                    spouseInfo.ChildrenCount = 1; // e.g. "son, Peter" or "daughter, Alice"
-                }
-                else if ( info.Contains( "one child born c. 1920" ) || info.Contains( "1908" ) || info.Contains( "son: John, 3/22/62" ) )
-                {
-                    spouseInfo.ChildrenCount = 1;
-                }
-                else if ( info.Contains( "twin sons, 1 daughter" ) )
-                {
-                    spouseInfo.ChildrenCount = 3;
-                }
-                else if ( info.Contains( "children, 5 sons" ) )
-                {
-                    spouseInfo.ChildrenCount = 5;
-                }
-                else
-                {
-                    info = info.Replace( "at least", "" ).Trim();
-
-                    while ( info.StartsWith( ";" ) || info.StartsWith( "," ) || info.StartsWith( ":" ) )
-                    {
-                        info = info.Substring( 1 ).Trim();
-                    }
-
-                    int spIndex = info.IndexOf( ' ' );
-                    spouseInfo.ChildrenCount = int.Parse( info.Substring( 0, spIndex ).Trim() );
-                }
-            }
-
-            return spouseInfo;
         }
     }
 }

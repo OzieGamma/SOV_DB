@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using DB.Models;
 
 namespace DB.Parsing
 {
-    public sealed class ProductionCastParser : ILineParser<ProductionCast>
+    public sealed class ProductionCastParser : ILineParser
     {
         public string FileName
         {
             get { return "Production_Cast"; }
         }
 
-        public ProductionCast Parse( string[] values )
+        public IEnumerable<object> Parse( string[] values )
         {
-            return new ProductionCast
+            yield return new ProductionCast
             {
                 ProductionId = ParseUtility.Get( values[0], int.Parse, "ProductionID" ),
                 PersonId = ParseUtility.Get( values[1], int.Parse, "PersonID" ),

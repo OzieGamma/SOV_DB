@@ -1,17 +1,18 @@
-﻿using DB.Models;
+﻿using System.Collections.Generic;
+using DB.Models;
 
 namespace DB.Parsing
 {
-    public sealed class CompanyParser : ILineParser<Company>
+    public sealed class CompanyParser : ILineParser
     {
         public string FileName
         {
             get { return "Company"; }
         }
 
-        public Company Parse( string[] values )
+        public IEnumerable<object> Parse( string[] values )
         {
-            return new Company
+            yield return new Company
             {
                 Id = ParseUtility.Get( values[0], int.Parse, "ID" ),
                 CountryCode = ParseUtility.MapRef( values[1], ParseCountryCode ),

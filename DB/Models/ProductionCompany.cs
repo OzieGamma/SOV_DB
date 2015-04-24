@@ -1,26 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace DB.Models
+﻿namespace DB.Models
 {
-    public sealed class ProductionCompany : IDatabaseModel
+    public sealed class ProductionCompany
     {
         public int ProductionId;
         public int CompanyId;
         public ProductionCompanyKind Kind;
 
-        public Task InsertInDatabaseAsync()
+        public override string ToString()
         {
-            return Database.ExecuteNonQueryAsync(
-                @"INSERT INTO ProductionCompany (ProductionId, CompanyId, Kind)
-                  VALUES (@ProductionId, @CompanyId, @Kind);",
-                new Dictionary<string, object>()
-                {
-                    { "@ProductionId", ProductionId },
-                    { "@CompanyId", CompanyId },
-                    { "@Kind", Kind }
-                }
-            );
+            return string.Join( "\t", ProductionId, CompanyId, Kind );
         }
     }
 }

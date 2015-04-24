@@ -1,14 +1,13 @@
 ﻿namespace DB.Models
 {
-    public sealed class Company
+    public sealed class ProductionCharacter
     {
         public int Id;
-        public string CountryCode;
         public string Name;
 
         public override string ToString()
         {
-            return string.Join( "\t", Id, CountryCode, Name );
+            return string.Join( "\t", Id, Name );
         }
     }
 }

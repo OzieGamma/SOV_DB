@@ -1,107 +1,61 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace DB.Models
+﻿namespace DB.Models
 {
-    public abstract class Production : IDatabaseModel
+    public sealed class Production
     {
         public int Id;
         public string Title;
         public int? Year;
         public ProductionGenre? Genre;
 
-        public virtual Task InsertInDatabaseAsync()
+        public override string ToString()
         {
-            return Database.ExecuteNonQueryAsync(
-                @"INSERT INTO Production (Id, Title, ReleaseYear, Genre)
-                  VALUES (@Id, @Title, @ReleaseYear, @Genre);",
-                new Dictionary<string, object>()
-                {
-                    { "@Id", Id },
-                    { "@Title", Title },
-                    { "@ReleaseYear", Year },
-                    { "@Genre", Genre }
-                }
-            );
+            return string.Join( "\t", Id, Title, Year, Genre );
         }
     }
 
-    public sealed class VideoGame : Production
+    public sealed class VideoGame
     {
-        public override async Task InsertInDatabaseAsync()
+        public int ProductionId;
+
+        public override string ToString()
         {
-            await base.InsertInDatabaseAsync();
-            await Database.ExecuteNonQueryAsync(
-                @"INSERT INTO VideoGame (ProductionId)
-                  VALUES (@ProductionId);",
-                new Dictionary<string, object>()
-                {
-                    { "@ProductionId", Id }
-                }
-            );
+            return ProductionId.ToString();
         }
     }
 
-    public sealed class Movie : Production
+    public sealed class Movie
     {
+        public int ProductionId;
         public MovieType Type;
 
-        public override async Task InsertInDatabaseAsync()
+        public override string ToString()
         {
-            await base.InsertInDatabaseAsync();
-            await Database.ExecuteNonQueryAsync(
-                @"INSERT INTO Movie (ProductionId, MovieType)
-                  VALUES (@ProductionId, @MovieType);",
-                new Dictionary<string, object>()
-                {
-                    { "@ProductionId", Id },
-                    { "@MovieType", Type }
-                }
-            );
+            return string.Join( "\t", ProductionId, Type );
         }
     }
 
-    public sealed class Series : Production
+    public sealed class Series
     {
+        public int ProductionId;
         public int? BeginningYear;
         public int? EndYear;
 
-        public override async Task InsertInDatabaseAsync()
+        public override string ToString()
         {
-            await base.InsertInDatabaseAsync();
-            await Database.ExecuteNonQueryAsync(
-                @"INSERT INTO Series (ProductionId, BeginningYear, EndYear)
-                  VALUES (@ProductionId, @BeginningYear, @EndYear);",
-                new Dictionary<string, object>()
-                {
-                    { "@ProductionId", Id },
-                    { "@BeginningYear", BeginningYear },
-                    { "@EndYear", EndYear }
-                }
-            );
+            return string.Join( "\t", ProductionId, BeginningYear, EndYear );
         }
     }
 
-    public sealed class SeriesEpisode : Production
+    public sealed class SeriesEpisode
     {
+        public int ProductionId;
         public int SeriesId;
         public int? SeasonNumber;
         public int? EpisodeNumber;
 
-        public override async Task InsertInDatabaseAsync()
+        public override string ToString()
         {
-            await base.InsertInDatabaseAsync();
-            await Database.ExecuteNonQueryAsync(
-                @"INSERT INTO SeriesEpisode (ProductionId, SeriesId, SeasonNumber, EpisodeNumber)
-                  VALUES (@ProductionId, @SeriesId, @SeasonNumber, @EpisodeNumber);",
-                new Dictionary<string, object>()
-                {
-                    { "@ProductionId", Id },
-                    { "@SeriesId", SeriesId },
-                    { "@SeasonNumber", SeasonNumber },
-                    { "@EpisodeNumber", EpisodeNumber }
-                }
-            );
+            return string.Join( "\t", ProductionId, SeriesId, SeasonNumber, EpisodeNumber );
         }
     }
 }

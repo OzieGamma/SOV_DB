@@ -53,9 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
-    <Compile Include="IDatabaseModel.cs" />
     <Compile Include="Models\AlternativePersonName.cs" />
-    <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\ProductionCharacter.cs" />
     <Compile Include="Models\CharacterRole.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\MovieType.cs" />
@@ -69,7 +68,6 @@
     <Compile Include="Models\AlternativeProductionTitle.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\Person.cs" />
-    <Compile Include="Models\PersonSpouseInfo.cs" />
     <Compile Include="Parsing\CharacterParser.cs" />
     <Compile Include="Parsing\CompanyParser.cs" />
     <Compile Include="Parsing\ParseUtility.cs" />
