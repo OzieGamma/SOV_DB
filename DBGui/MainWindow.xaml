@@ -13,7 +13,42 @@
         </Menu>
         
         <TabControl Grid.Row="1">
-            <TabItem Header="Raw query">
+            <TabItem x:Name="PeopleTab"
+                     Header="People">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    
+                    <TextBox x:Name="PeopleSearchBox" />
+                    
+                    <Button Grid.Column="1"
+                            Content="Search by name"
+                            Click="PeopleSearchButton_Click" />
+                    
+                    <ListView x:Name="PeopleView"
+                              Grid.ColumnSpan="2"
+                              Grid.Row="1">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding FirstName}" />
+                                    <Bold>
+                                        <Run Text="{Binding LastName}" />
+                                    </Bold>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="RawQueryTab"
+                     Header="Raw query">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />

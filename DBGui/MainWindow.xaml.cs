@@ -22,6 +22,16 @@ namespace DBGui
             }
         }
 
+        private async void PeopleSearchButton_Click( object sender, RoutedEventArgs e )
+        {
+            var table = await Database.ExecuteQueryAsync(
+@"SELECT Id, FirstName, LastName, Gender, Trivia, Quotes, BirthDate, DeathDate, BirthName, ShortBio, SpouseInfo, Height
+  FROM Person 
+  WHERE FirstName LIKE '%" + PeopleSearchBox.Text + "%' OR LastName LIKE '%" + PeopleSearchBox.Text + "%';" );
+            PeopleView.ItemsSource = table.DefaultView;
+
+        }
+
         private async void RawQueryButton_Click( object sender, RoutedEventArgs e )
         {
             try
