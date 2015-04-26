@@ -12,7 +12,7 @@ namespace DB
         private static void Main()
         {
             Console.WriteLine( "Doing work..." );
-            DatabaseImport.ImportFromDirectory( InputFilesPath );
+            DatabaseImport.ImportFromDirectoryAsync( InputFilesPath ).Wait();
             Console.Read();
         }
     }

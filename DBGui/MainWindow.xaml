@@ -3,11 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="600" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
         <Menu IsMainMenu="True">
-            <MenuItem Header="_Import">
-                <MenuItem Header="From _CSV ..." />
-            </MenuItem>
+            <MenuItem Header="_Import..." Click="ImportMenu_Click" />
         </Menu>
-
     </Grid>
 </Window>

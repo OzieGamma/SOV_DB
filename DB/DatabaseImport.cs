@@ -13,7 +13,7 @@ namespace DB
         // Debug messages will be printed every time this number of lines is parsed
         private const int ReportPeriod = 100000;
 
-        public static async Task ImportFromDirectory( string directoryPath )
+        public static async Task ImportFromDirectoryAsync( string directoryPath )
         {
             var parsers = new ILineParser[] {
                 new AlternativePersonNameParser(),
