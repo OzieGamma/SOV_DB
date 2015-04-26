@@ -12,7 +12,7 @@ CREATE TABLE Person (
     BirthName NVARCHAR (MAX),
     ShortBio NVARCHAR (MAX),
     SpouseInfo NVARCHAR (MAX),
-    Height NUMERIC (5),
+    Height INT,
     PRIMARY KEY (Id),
     CHECK (Gender IN ('F', 'M'))
 );

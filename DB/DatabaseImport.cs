@@ -27,12 +27,10 @@ namespace DB
             };
 
             var tempDir = new DirectoryInfo( Path.Combine( Path.GetTempPath(), "DB_CSV" ) );
-            if ( tempDir.Exists )
+            if ( !tempDir.Exists )
             {
-                tempDir.Delete( true );
+                tempDir.Create();
             }
-            tempDir.Refresh();
-            tempDir.Create();
 
             Parallel.ForEach( parsers, parser =>
             {

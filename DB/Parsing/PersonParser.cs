@@ -59,17 +59,17 @@ namespace DB.Parsing
 
             if ( parts.Length == 1 )
             {
-                return Tuple.Create( name, (string) null );
+                return Tuple.Create( name.Trim(), (string) null );
             }
             if ( parts.Length == 2 )
             {
-                return Tuple.Create( parts[1], parts[0] );
+                return Tuple.Create( parts[1].Trim(), parts[0].Trim() );
             }
 
             throw new Exception( "Too many parts" );
         }
 
-        private static decimal ParseHeight( string height )
+        private static int ParseHeight( string height )
         {
             // HERE BE DRAGONS!
 
@@ -130,7 +130,7 @@ namespace DB.Parsing
                 realSize = decimal.Parse( s ) / 100.0m;
             }
 
-            return realSize;
+            return (int) ( realSize * 100.0m );
         }
 
         private static DateTimeOffset ParseDate( string date )

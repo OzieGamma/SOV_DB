@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 
 namespace DB.Models
 {
@@ -16,11 +15,11 @@ namespace DB.Models
         public string BirthName;
         public string ShortBio;
         public string SpouseInfo;
-        public decimal? Height;
+        public int? Height;
 
         public override string ToString()
         {
-            return string.Join( "\t", Id, FirstName, LastName, Gender, Trivia, Quotes, BirthDate.HasValue ? BirthDate.Value.ToString( "O" ) : "", DeathDate.HasValue ? DeathDate.Value.ToString( "O" ) : "", BirthName, ShortBio, SpouseInfo, Height.HasValue ? Height.Value.ToString( CultureInfo.InvariantCulture ) : "" );
+            return string.Join( "\t", Id, FirstName, LastName, Gender, Trivia, Quotes, BirthDate.HasValue ? BirthDate.Value.ToString( "O" ) : "", DeathDate.HasValue ? DeathDate.Value.ToString( "O" ) : "", BirthName, ShortBio, SpouseInfo, Height );
         }
     }
 }
