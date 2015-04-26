@@ -1,32 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using DB.Parsing;
-
-namespace DB
+﻿namespace DB
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
 
-    public static class Program
+    using DB.Parsing;
+
+    public class Import
     {
+        private readonly string inputFilesDirectory;
+        private readonly IOutput output;
+
+        public Import(string inputFilesDirectory, IOutput output)
+        {
+            this.inputFilesDirectory = inputFilesDirectory;
+            this.output = output;
+        }
+
         // Debug messages will be printed every time this number of lines is parsed
         private const int ReportPeriod = 100000;
 
-        // All CSV files must be in that folder, without renaming them
-        private const string InputFilesPath =
-            //@"C:\Users\Oswald\Downloads\Movies"; // Oswald
-        @"X:\Documents\EPFL\DB\Project dataset"; // Solal
-
-        private static void Main()
-        {
-            Console.WriteLine( "Doing work..." );
-            ConvertCsvs();
-            Console.Read();
-        }
-
-        private static async void ConvertCsvs()
+        public async Task FromCsv()
         {
             var parsers = new ILineParser[] {
                 new AlternativePersonNameParser(),
@@ -38,6 +35,8 @@ namespace DB
                 new ProductionCastParser(),
                 new ProductionCompanyParser(),
             };
+            
+            this.output.WriteLine("Creating temp dir.");
 
             var tempDir = new DirectoryInfo( Path.Combine( Path.GetTempPath(), "DB_CSV" ) );
             if ( tempDir.Exists )
@@ -47,9 +46,11 @@ namespace DB
             tempDir.Refresh();
             tempDir.Create();
 
+            this.output.WriteLine("Launching CSV creation");
+
             Parallel.ForEach( parsers, parser =>
             {
-                var results = from obj in ParseCsv( parser )
+                var results = from obj in this.ParseCsv( parser )
                               group obj by obj.GetType() into grouped
                               select new { Name = grouped.Key.Name, Items = from o in grouped select o.ToString() };
 
@@ -60,23 +61,28 @@ namespace DB
                 }
             } );
 
+            this.output.WriteLine("Done writing CSV.");
+
             await Database.DisableReferentialIntegrityAsync();
             await Database.DropAllAsync();
             await Database.CreateAllAsync();
+            this.output.WriteLine("Done creating DB.");
+            this.output.WriteLine("Launching DB import.");
+
             foreach ( var file in tempDir.EnumerateFiles() )
             {
                 string command = string.Format( "BULK INSERT {0} FROM '{1}' WITH ( CODEPAGE = 1200, DATAFILETYPE = 'widechar' )", file.Name, file.FullName );
                 await Database.ExecuteAsync( command );
             }
 
-            Console.WriteLine( "Done." );
+            this.output.WriteLine( "Done." );
         }
 
-        private static IEnumerable<object> ParseCsv( ILineParser parser )
+        private IEnumerable<object> ParseCsv( ILineParser parser )
         {
             int lineNumber = 0;
             var builder = new StringBuilder();
-            foreach ( var values in ReadCsv( parser.FileName ) )
+            foreach ( var values in this.ReadCsv( parser.FileName ) )
             {
                 foreach ( var value in parser.Parse( values ) )
                 {
@@ -91,9 +97,9 @@ namespace DB
             }
         }
 
-        private static IEnumerable<string[]> ReadCsv( string fileName )
+        private IEnumerable<string[]> ReadCsv( string fileName )
         {
-            var path = Path.Combine( InputFilesPath, fileName.ToUpper() + ".csv" );
+            var path = Path.Combine(this.inputFilesDirectory, fileName.ToUpper() + ".csv" );
 
             using ( TextReader reader = new StreamReader( File.OpenRead( path ) ) )
             {
