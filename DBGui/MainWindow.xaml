@@ -11,5 +11,31 @@
         <Menu IsMainMenu="True">
             <MenuItem Header="_Import..." Click="ImportMenu_Click" />
         </Menu>
+        
+        <TabControl Grid.Row="1">
+            <TabItem Header="Raw query">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    
+                    <TextBox x:Name="RawQueryBox" 
+                             AcceptsReturn="True" />
+                    
+                    <Button Grid.Column="1"
+                            Content="Query"
+                            Click="RawQueryButton_Click" />
+                    
+                    <DataGrid Grid.ColumnSpan="2"
+                              Grid.Row="1"
+                              x:Name="RawQueryResultsGrid" />
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

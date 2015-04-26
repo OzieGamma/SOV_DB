@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
@@ -30,20 +31,14 @@ namespace DB
             return ExecuteAsync( File.ReadAllText( "create_db.sql" ) );
         }
 
-        public static async Task<SqlDataReader> ExecuteReaderAsync( string query, IDictionary<string, object> parameters )
+        public static Task<DataTable> ExecuteQueryAsync( string query )
         {
-            using ( var connection = new SqlConnection( ConnectionString ) )
+            return Task.Factory.StartNew( () =>
             {
-                await connection.OpenAsync();
-                var cmd = new SqlCommand( query, connection ) { CommandTimeout = Timeout };
-
-                foreach ( var parameter in parameters )
-                {
-                    cmd.Parameters.AddWithValue( parameter.Key, parameter.Value ?? DBNull.Value );
-                }
-
-                return await cmd.ExecuteReaderAsync();
-            }
+                var dataTable = new DataTable();
+                new SqlDataAdapter( query, ConnectionString ).Fill( dataTable );
+                return dataTable;
+            } );
         }
 
         public static async Task ExecuteNonQueryAsync( string command, IDictionary<string, object> parameters )

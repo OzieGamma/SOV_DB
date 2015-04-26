@@ -1,6 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Forms;
+﻿using System;
+using System.Windows;
 using DB;
+using WinForms = System.Windows.Forms;
 
 namespace DBGui
 {
@@ -14,10 +15,23 @@ namespace DBGui
 
         private async void ImportMenu_Click( object sender, RoutedEventArgs e )
         {
-            var dialog = new FolderBrowserDialog();
-            if ( dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK )
+            var dialog = new WinForms.FolderBrowserDialog();
+            if ( dialog.ShowDialog() == WinForms.DialogResult.OK )
             {
                 await DatabaseImport.ImportFromDirectoryAsync( dialog.SelectedPath );
+            }
+        }
+
+        private async void RawQueryButton_Click( object sender, RoutedEventArgs e )
+        {
+            try
+            {
+                var table = await Database.ExecuteQueryAsync( RawQueryBox.Text );
+                RawQueryResultsGrid.ItemsSource = table.DefaultView;
+            }
+            catch ( Exception ex )
+            {
+                MessageBox.Show( ex.StackTrace );
             }
         }
     }
