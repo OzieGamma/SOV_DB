@@ -44,6 +44,7 @@ namespace DB
             {
                 tempDir.Delete( true );
             }
+            tempDir.Refresh();
             tempDir.Create();
 
             Parallel.ForEach( parsers, parser =>
@@ -55,7 +56,7 @@ namespace DB
                 foreach ( var result in results )
                 {
                     var path = Path.Combine( tempDir.FullName, result.Name );
-                    File.WriteAllLines( path, result.Items, new UTF8Encoding( false ) );
+                    File.WriteAllLines( path, result.Items, new UnicodeEncoding( false, true ) );
                 }
             } );
 
@@ -64,7 +65,7 @@ namespace DB
             await Database.CreateAllAsync();
             foreach ( var file in tempDir.EnumerateFiles() )
             {
-                string command = string.Format( "BULK INSERT {0} FROM '{1}'", file.Name, file.FullName );
+                string command = string.Format( "BULK INSERT {0} FROM '{1}' WITH ( CODEPAGE = 1200, DATAFILETYPE = 'widechar' )", file.Name, file.FullName );
                 await Database.ExecuteAsync( command );
             }
 
