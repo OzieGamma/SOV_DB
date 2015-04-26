@@ -1,8 +1,6 @@
-namespace DBGui
+namespace DB
 {
     using System;
-
-    using DB;
 
     public class ConsoleOutput : IOutput
     {

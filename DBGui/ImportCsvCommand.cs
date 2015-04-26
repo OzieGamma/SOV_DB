@@ -40,10 +40,9 @@ namespace DBGui
             if (result == DialogResult.OK)
             {
                 string directory = dialog.SelectedPath;
-                
 
                 // Launch import
-                new Import(directory, new ConsoleOutput()).FromCsv().Wait();
+                new Import(new ConsoleOutput()).FromCsvDirectory(directory).Wait();
 
                 this.Importing = false;
             }
