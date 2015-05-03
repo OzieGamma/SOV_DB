@@ -24,5 +24,12 @@
             <Setter Property="Padding" Value="10,5" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
+        
+        <Style TargetType="DataGrid">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
+            <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
+            <Setter Property="RowHeaderWidth" Value="0" />
+        </Style>
     </Application.Resources>
 </Application>

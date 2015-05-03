@@ -6,18 +6,18 @@ using DBGui.Models;
 
 namespace DBGui.Controls
 {
-    public sealed partial class PersonInfoView
+    public partial class ProductionInfoView
     {
-        public IList<PersonInfo> Items
+        public IList<ProductionInfo> Items
         {
-            get { return (IList<PersonInfo>) GetValue( ItemsProperty ); }
+            get { return (IList<ProductionInfo>) GetValue( ItemsProperty ); }
             set { SetValue( ItemsProperty, value ); }
         }
 
         public static readonly DependencyProperty ItemsProperty =
-            DependencyProperty.Register( "Items", typeof( IList<PersonInfo> ), typeof( PersonInfoView ), new PropertyMetadata( null ) );
+            DependencyProperty.Register( "Items", typeof( IList<ProductionInfo> ), typeof( ProductionInfoView ), new PropertyMetadata( null ) );
 
-        public PersonInfoView()
+        public ProductionInfoView()
         {
             DataContext = this;
             InitializeComponent();
@@ -25,8 +25,8 @@ namespace DBGui.Controls
 
         private void Item_MouseDoubleClick( object sender, MouseButtonEventArgs e )
         {
-            var info = (PersonInfo) ( (ListViewItem) sender ).DataContext;
-            new PersonWindow( info.Id ).Show();
+            var info = (ProductionInfo) ( (ListViewItem) sender ).DataContext;
+            new ProductionWindow( info.Id ).Show();
         }
     }
 }

@@ -80,9 +80,13 @@
     <Compile Include="Controls\PersonInfoView.xaml.cs">
       <DependentUpon>PersonInfoView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ProductionInfoView.xaml.cs">
+      <DependentUpon>ProductionInfoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ProgressIndicator.xaml.cs">
       <DependentUpon>ProgressIndicator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ScrollToTopBehavior.cs" />
     <Compile Include="Controls\TextInput.xaml.cs">
       <DependentUpon>TextInput.xaml</DependentUpon>
     </Compile>
@@ -90,10 +94,17 @@
     <Compile Include="PersonWindow.xaml.cs">
       <DependentUpon>PersonWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProductionWindow.xaml.cs">
+      <DependentUpon>ProductionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Sql\KnownStatements.cs" />
     <Compile Include="Sql\Statement.cs" />
     <Compile Include="Utilities\DataTableExtensions.cs" />
     <Page Include="Controls\PersonInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ProductionInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,6 +129,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PersonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProductionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

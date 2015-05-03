@@ -13,7 +13,7 @@ namespace DBGui.Controls
 
         public WindowBase()
         {
-            Width = 400;
+            Width = 600;
             Height = 500;
             Title = "Database project";
 

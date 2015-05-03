@@ -41,11 +41,11 @@ namespace DBGui.Utilities
             return (int) row[columnName];
         }
 
-        public static T? GetEnum<T>( this DataRow row, string columnName )
+        public static T? GetEnumOpt<T>( this DataRow row, string columnName )
             where T : struct
         {
             string value = row.GetString( columnName );
-            return columnName == null ? null : (T?) Enum.Parse( typeof( T ), value );
+            return value == null ? null : (T?) Enum.Parse( typeof( T ), value );
         }
     }
 }

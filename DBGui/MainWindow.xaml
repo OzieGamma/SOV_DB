@@ -17,7 +17,7 @@
         <Menu IsMainMenu="True">
             <MenuItem Header="_Import..." Click="ImportMenu_Click" />
         </Menu>
-        
+
         <TabControl Grid.Row="1">
             <TabItem Header="People">
                 <Grid>
@@ -29,7 +29,7 @@
 
                     <my:TextInput ButtonText="Search by name"
                                   Executed="PersonNameInput_Executed" />
-                    
+
                     <my:TextInput Grid.Row="1"
                                   ButtonText="Use WHERE clause"
                                   Executed="PersonWhereInput_Executed" />
@@ -39,8 +39,41 @@
                 </Grid>
             </TabItem>
             
+            <TabItem Header="Productions">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <my:TextInput ButtonText="Search by title"
+                                  Executed="ProductionTitleInput_Executed" />
+
+                    <my:TextInput Grid.Row="1"
+                                  ButtonText="Use WHERE clause"
+                                  Executed="ProductionWhereInput_Executed" />
+
+                    <my:ProductionInfoView x:Name="ProductionsView"
+                                           Grid.Row="2" />
+                </Grid>
+            </TabItem>
+
             <TabItem Header="Raw queries">
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <my:TextInput ButtonText="Query"
+                                  IsMultiline="True"
+                                  Executed="RawInput_Executed" />
+
+                    <DataGrid Grid.Row="1"
+                              x:Name="RawQueryResultsView"
+                              IsReadOnly="True" />
+                </Grid>
             </TabItem>
         </TabControl>
 

@@ -9,7 +9,8 @@
         
         <TextBox x:Name="Box"
                  KeyDown="Box_KeyDown"
-                 BorderThickness="1,1,0,1" />
+                 BorderThickness="1,1,0,1"
+                 AcceptsReturn="{Binding IsMultiline}" />
         
         <Button Grid.Column="1"
                 BorderBrush="{Binding BorderBrush, ElementName=Box}"

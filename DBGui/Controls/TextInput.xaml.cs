@@ -17,6 +17,16 @@ namespace DBGui.Controls
             DependencyProperty.Register( "ButtonText", typeof( string ), typeof( TextInput ), new PropertyMetadata( null ) );
 
 
+        public bool IsMultiline
+        {
+            get { return (bool) GetValue( IsMultilineProperty ); }
+            set { SetValue( IsMultilineProperty, value ); }
+        }
+
+        public static readonly DependencyProperty IsMultilineProperty =
+            DependencyProperty.Register( "IsMultiline", typeof( bool ), typeof( TextInput ), new PropertyMetadata( false ) );
+
+
         public TextInput()
         {
             DataContext = this;

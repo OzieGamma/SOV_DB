@@ -13,23 +13,40 @@ namespace DBGui
             InitializeComponent();
         }
 
-        private async void ImportMenu_Click( object sender, RoutedEventArgs e )
+        private void ImportMenu_Click( object sender, RoutedEventArgs e )
         {
             var dialog = new WinForms.FolderBrowserDialog();
             if ( dialog.ShowDialog() == WinForms.DialogResult.OK )
             {
-                await Database.ImportFromDirectoryAsync( dialog.SelectedPath );
+                DoAsync( () => Database.ImportFromDirectoryAsync( dialog.SelectedPath ) );
             }
         }
 
         private void PersonNameInput_Executed( string text )
         {
-            DoAsync( async () => { PeopleView.Items = await PersonInfo.SearchByNameAsync( text ); } );
+            DoAsync( async () => PeopleView.Items = await PersonInfo.SearchByNameAsync( text ) );
         }
 
         private void PersonWhereInput_Executed( string text )
         {
-            DoAsync( async () => { PeopleView.Items = await PersonInfo.SearchAsync( text ); } );
+            DoAsync( async () => PeopleView.Items = await PersonInfo.SearchAsync( text ) );
+        }
+
+
+        private void ProductionTitleInput_Executed( string text )
+        {
+            DoAsync( async () => ProductionsView.Items = await ProductionInfo.SearchByTitleAsync( text ) );
+        }
+
+        private void ProductionWhereInput_Executed( string text )
+        {
+            DoAsync( async () => ProductionsView.Items = await ProductionInfo.SearchAsync( text ) );
+        }
+
+
+        private void RawInput_Executed( string text )
+        {
+            DoAsync( async () => RawQueryResultsView.ItemsSource = ( await Database.ExecuteQueryAsync( text ) ).DefaultView );
         }
     }
 }
