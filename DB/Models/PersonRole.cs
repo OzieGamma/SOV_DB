@@ -1,6 +1,6 @@
 ﻿namespace DB.Models
 {
-    public enum CharacterRole
+    public enum PersonRole
     {
         Actor,
         Actress,

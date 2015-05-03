@@ -23,42 +23,42 @@ namespace DB.Internals.Parsing
             };
         }
 
-        private static CharacterRole ParseRole( string role )
+        private static PersonRole ParseRole( string role )
         {
             switch ( role )
             {
                 case "actor":
-                    return CharacterRole.Actor;
+                    return PersonRole.Actor;
 
                 case "actress":
-                    return CharacterRole.Actress;
+                    return PersonRole.Actress;
 
                 case "cinematographer":
-                    return CharacterRole.Cinematographer;
+                    return PersonRole.Cinematographer;
 
                 case "composer":
-                    return CharacterRole.Composer;
+                    return PersonRole.Composer;
 
                 case "costume designer":
-                    return CharacterRole.CostumeDesigner;
+                    return PersonRole.CostumeDesigner;
 
                 case "director":
-                    return CharacterRole.Director;
+                    return PersonRole.Director;
 
                 case "editor":
-                    return CharacterRole.Editor;
+                    return PersonRole.Editor;
 
                 case "miscellaneous crew":
-                    return CharacterRole.MiscellaneousCrew;
+                    return PersonRole.MiscellaneousCrew;
 
                 case "producer":
-                    return CharacterRole.Producer;
+                    return PersonRole.Producer;
 
                 case "production designer":
-                    return CharacterRole.ProductionDesigner;
+                    return PersonRole.ProductionDesigner;
 
                 case "writer":
-                    return CharacterRole.Writer;
+                    return PersonRole.Writer;
 
                 default:
                     throw new InvalidOperationException( "Unknown character role: " + role );

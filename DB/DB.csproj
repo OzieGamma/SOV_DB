@@ -79,7 +79,7 @@
     <Compile Include="Internals\DatabaseImport.cs" />
     <Compile Include="Internals\ImportModels\AlternativePersonName.cs" />
     <Compile Include="Internals\ImportModels\ProductionCharacter.cs" />
-    <Compile Include="Models\CharacterRole.cs" />
+    <Compile Include="Models\PersonRole.cs" />
     <Compile Include="Internals\ImportModels\Company.cs" />
     <Compile Include="Models\MovieType.cs" />
     <Compile Include="Internals\ImportModels\Production.cs" />

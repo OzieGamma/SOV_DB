@@ -7,7 +7,7 @@ namespace DB.Internals.ImportModels
         public int ProductionId;
         public int PersonId;
         public int? CharacterId;
-        public CharacterRole Role;
+        public PersonRole Role;
 
         public override string ToString()
         {

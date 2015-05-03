@@ -91,13 +91,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\Episode.cs" />
+    <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\PersonInfo.cs" />
+    <Compile Include="Models\PersonRoleInfo.cs" />
+    <Compile Include="Models\Production.cs" />
+    <Compile Include="Models\ProductionInfo.cs" />
+    <Compile Include="Models\Series.cs" />
+    <Compile Include="Models\VideoGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DB\DB.csproj">
