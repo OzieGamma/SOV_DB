@@ -38,7 +38,7 @@
                                        Grid.Row="2" />
                 </Grid>
             </TabItem>
-            
+
             <TabItem Header="Productions">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -56,6 +56,26 @@
 
                     <my:ProductionInfoView x:Name="ProductionsView"
                                            Grid.Row="2" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Characters">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <my:TextInput ButtonText="Search by name"
+                                  Executed="CharacterNameInput_Executed" />
+
+                    <my:TextInput Grid.Row="1"
+                                  ButtonText="Use WHERE clause"
+                                  Executed="CharacterWhereInput_Executed" />
+
+                    <my:CharacterInfoView x:Name="CharactersView"
+                                          Grid.Row="2" />
                 </Grid>
             </TabItem>
 

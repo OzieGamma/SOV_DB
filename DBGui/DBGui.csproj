@@ -77,6 +77,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CharacterWindow.xaml.cs">
+      <DependentUpon>CharacterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CharacterInfoView.xaml.cs">
+      <DependentUpon>CharacterInfoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PersonInfoView.xaml.cs">
       <DependentUpon>PersonInfoView.xaml</DependentUpon>
     </Compile>
@@ -100,6 +106,14 @@
     <Compile Include="Sql\KnownStatements.cs" />
     <Compile Include="Sql\Statement.cs" />
     <Compile Include="Utilities\DataTableExtensions.cs" />
+    <Page Include="CharacterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CharacterInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\PersonInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

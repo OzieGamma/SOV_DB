@@ -5,7 +5,7 @@ namespace DBGui
 {
     public partial class ProductionWindow
     {
-        private readonly int _productionId;
+        private readonly int _id;
         private Production _production;
 
         public Production Production
@@ -14,9 +14,9 @@ namespace DBGui
             private set { Set( ref _production, value ); }
         }
 
-        public ProductionWindow( int productionId )
+        public ProductionWindow( int id )
         {
-            _productionId = productionId;
+            _id = id;
         }
 
         protected override void Load()

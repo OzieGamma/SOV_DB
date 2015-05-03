@@ -44,6 +44,17 @@ namespace DBGui
         }
 
 
+        private void CharacterNameInput_Executed( string text )
+        {
+            DoAsync( async () => CharactersView.Items = await CharacterInfo.SearchByNameAsync( text ) );
+        }
+
+        private void CharacterWhereInput_Executed( string text )
+        {
+            DoAsync( async () => CharactersView.Items = await CharacterInfo.SearchAsync( text ) );
+        }
+
+
         private void RawInput_Executed( string text )
         {
             DoAsync( async () => RawQueryResultsView.ItemsSource = ( await Database.ExecuteQueryAsync( text ) ).DefaultView );

@@ -3,7 +3,7 @@ namespace DBGui
 {
     public sealed partial class PersonWindow
     {
-        private readonly int _personId;
+        private readonly int _id;
         private Person _person;
 
         public Person Person
@@ -13,15 +13,15 @@ namespace DBGui
         }
 
 
-        public PersonWindow( int personId )
+        public PersonWindow( int id )
         {
-            _personId = personId;
+            _id = id;
         }
 
 
         protected override void Load()
         {
-            DoAsync( async () => { Person = await Person.GetAsync( _personId ); } );
+            DoAsync( async () => { Person = await Person.GetAsync( _id ); } );
         }
     }
 }
