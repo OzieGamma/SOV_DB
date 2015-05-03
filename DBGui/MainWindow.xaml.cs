@@ -24,34 +24,34 @@ namespace DBGui
 
         private void PersonNameInput_Executed( string text )
         {
-            DoAsync( async () => PeopleView.Items = await PersonInfo.SearchByNameAsync( text ) );
+            DoAsync( async () => PeopleView.ItemsSource = await PersonInfo.SearchByNameAsync( text ) );
         }
 
         private void PersonWhereInput_Executed( string text )
         {
-            DoAsync( async () => PeopleView.Items = await PersonInfo.SearchAsync( text ) );
+            DoAsync( async () => PeopleView.ItemsSource = await PersonInfo.SearchAsync( text ) );
         }
 
 
         private void ProductionTitleInput_Executed( string text )
         {
-            DoAsync( async () => ProductionsView.Items = await ProductionInfo.SearchByTitleAsync( text ) );
+            DoAsync( async () => ProductionsView.ItemsSource = await ProductionInfo.SearchByTitleAsync( text ) );
         }
 
         private void ProductionWhereInput_Executed( string text )
         {
-            DoAsync( async () => ProductionsView.Items = await ProductionInfo.SearchAsync( text ) );
+            DoAsync( async () => ProductionsView.ItemsSource = await ProductionInfo.SearchAsync( text ) );
         }
 
 
         private void CharacterNameInput_Executed( string text )
         {
-            DoAsync( async () => CharactersView.Items = await CharacterInfo.SearchByNameAsync( text ) );
+            DoAsync( async () => CharactersView.ItemsSource = await CharacterInfo.SearchByNameAsync( text ) );
         }
 
         private void CharacterWhereInput_Executed( string text )
         {
-            DoAsync( async () => CharactersView.Items = await CharacterInfo.SearchAsync( text ) );
+            DoAsync( async () => CharactersView.ItemsSource = await CharacterInfo.SearchAsync( text ) );
         }
 
 

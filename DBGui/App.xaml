@@ -1,6 +1,7 @@
 ﻿<Application x:Class="DBGui.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:my="clr-namespace:DBGui.Controls"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <Style TargetType="TextBlock">
@@ -8,6 +9,7 @@
         </Style>
         <Style TargetType="ListView">
             <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="my:ScrollToTop.Enabled" Value="True" />
         </Style>
         <Style TargetType="Button">
             <Setter Property="Padding" Value="5,0" />
@@ -24,12 +26,49 @@
             <Setter Property="Padding" Value="10,5" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
-        
+
         <Style TargetType="DataGrid">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
             <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
             <Setter Property="RowHeaderWidth" Value="0" />
         </Style>
+
+        <!-- Styles for info listviews -->
+        <DataTemplate x:Key="PersonInfoTemplate">
+            <TextBlock>
+                <Run Text="{Binding FirstName, Mode=OneTime}" />
+                <Bold>
+                    <Run Text="{Binding LastName, Mode=OneTime}" />
+                </Bold>
+            </TextBlock>
+        </DataTemplate>
+        <Style x:Key="PersonInfoItemStyle" TargetType="ListViewItem">
+            <EventSetter Event="MouseDoubleClick" Handler="PersonInfo_MouseDoubleClick" />
+        </Style>
+
+        <DataTemplate x:Key="ProductionInfoTemplate">
+            <TextBlock>
+                <Bold>
+                    <Run Text="{Binding Title, Mode=OneTime}" />
+                </Bold>
+                <Italic>
+                    <Run Text="{Binding Year, TargetNullValue='', Mode=OneTime}" />
+                </Italic>
+                <Run Text="{Binding Genre, StringFormat='({0})', TargetNullValue='', Mode=OneTime}" />
+            </TextBlock>
+        </DataTemplate>
+        <Style x:Key="ProductionInfoItemStyle" TargetType="ListViewItem">
+            <EventSetter Event="MouseDoubleClick" Handler="ProductionInfo_MouseDoubleClick" />
+        </Style>
+
+        <DataTemplate x:Key="CharacterInfoTemplate">
+            <TextBlock Text="{Binding Name, Mode=OneTime}" />
+        </DataTemplate>
+        <Style x:Key="CharacterInfoItemStyle" TargetType="ListViewItem">
+            <EventSetter Event="MouseDoubleClick" Handler="CharacterInfo_MouseDoubleClick" />
+        </Style>
+
+
     </Application.Resources>
 </Application>

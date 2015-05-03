@@ -1,4 +1,8 @@
-﻿namespace DBGui
+﻿using System.Windows.Controls;
+using System.Windows.Input;
+using DBGui.Models;
+
+namespace DBGui
 {
     public sealed partial class App
     {
@@ -13,6 +17,24 @@
 #endif
 
             new PersonWindow( 22378 ).Show();
+        }
+
+        private void PersonInfo_MouseDoubleClick( object sender, MouseButtonEventArgs e )
+        {
+            var info = (PersonInfo) ( (ListViewItem) sender ).DataContext;
+            new PersonWindow( info.Id ).Show();
+        }
+
+        private void ProductionInfo_MouseDoubleClick( object sender, MouseButtonEventArgs e )
+        {
+            var info = (ProductionInfo) ( (ListViewItem) sender ).DataContext;
+            new ProductionWindow( info.Id ).Show();
+        }
+
+        private void CharacterInfo_MouseDoubleClick( object sender, MouseButtonEventArgs e )
+        {
+            var info = (CharacterInfo) ( (ListViewItem) sender ).DataContext;
+            new CharacterWindow( info.Id ).Show();
         }
     }
 }

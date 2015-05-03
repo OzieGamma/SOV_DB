@@ -10,6 +10,7 @@ namespace DBGui.Controls
     public abstract class WindowBase : Window, INotifyPropertyChanged
     {
         private readonly ProgressIndicator _progressIndicator;
+        private bool _loaded;
 
         public WindowBase()
         {
@@ -28,7 +29,12 @@ namespace DBGui.Controls
         protected override void OnActivated( EventArgs e )
         {
             base.OnActivated( e );
-            Load();
+
+            if ( !_loaded )
+            {
+                _loaded = true;
+                Load();
+            }
         }
 
         protected virtual void Load() { }
