@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DB.Models;
 
 namespace DBGui.Models
@@ -21,5 +22,10 @@ namespace DBGui.Models
 
         public string[] AlternativeNames { get; private set; }
         public Dictionary<ProductionInfo, PersonRoleInfo> Roles { get; private set; }
+
+        public static Task<Person> GetAsync( int id )
+        {
+            throw new NotImplementedException();
+        }
     }
 }

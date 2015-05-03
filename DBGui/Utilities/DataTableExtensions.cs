@@ -20,6 +20,10 @@ namespace DBGui.Utilities
 
         public static string GetString( this DataRow row, string columnName )
         {
+            if ( row[columnName] == DBNull.Value )
+            {
+                return null;
+            }
             return (string) row[columnName];
         }
 
@@ -28,10 +32,20 @@ namespace DBGui.Utilities
             return (int) row[columnName];
         }
 
-        public static T GetEnum<T>( this DataRow row, string columnName )
+        public static int? GetIntOpt( this DataRow row, string columnName )
+        {
+            if ( row[columnName] == DBNull.Value )
+            {
+                return null;
+            }
+            return (int) row[columnName];
+        }
+
+        public static T? GetEnum<T>( this DataRow row, string columnName )
             where T : struct
         {
-            return (T) Enum.Parse( typeof( T ), row.GetString( columnName ) );
+            string value = row.GetString( columnName );
+            return columnName == null ? null : (T?) Enum.Parse( typeof( T ), value );
         }
     }
 }

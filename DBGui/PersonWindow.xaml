@@ -1,0 +1,8 @@
+﻿<my:WindowBase x:Class="DBGui.PersonWindow"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:my="clr-namespace:DBGui.Controls">
+    <Grid>
+        <my:ProgressIndicator x:Name="ProgressIndicator" />
+    </Grid>
+</my:WindowBase>

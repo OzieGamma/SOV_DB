@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="DBGui.Controls.PersonInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style TargetType="ListViewItem">
+            <EventSetter Event="MouseDoubleClick" Handler="Person_MouseDoubleClick" />
+        </Style>
+    </UserControl.Resources>
+    <ListView x:Name="View"
+              ItemsSource="{Binding Items}">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextBlock>
+                    <Run Text="{Binding FirstName, Mode=OneTime}" />
+                    <Bold>
+                        <Run Text="{Binding LastName, Mode=OneTime}" />
+                    </Bold>
+                </TextBlock>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</UserControl>

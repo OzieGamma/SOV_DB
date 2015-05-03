@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using DB;
+using DBGui.Models;
 using WinForms = System.Windows.Forms;
 
 namespace DBGui
@@ -19,6 +20,16 @@ namespace DBGui
             {
                 await Database.ImportFromDirectoryAsync( dialog.SelectedPath );
             }
+        }
+
+        private void PersonNameInput_Executed( string text )
+        {
+            DoAsync( async () => { PeopleView.Items = await PersonInfo.SearchByNameAsync( text ); } );
+        }
+
+        private void PersonWhereInput_Executed( string text )
+        {
+            DoAsync( async () => { PeopleView.Items = await PersonInfo.SearchAsync( text ); } );
         }
     }
 }

@@ -20,7 +20,12 @@ namespace DBGui.Models
 
         public static Task<PersonInfo[]> SearchByNameAsync( string name )
         {
-            return SearchAsync( @"FirstName LIKE '%" + name + "%' OR LastName LIKE '%" + name + "%'" );
+            return SearchAsync( string.Format(
+@"FirstName LIKE '%{0}%' OR 
+  LastName LIKE '%{0}%' OR
+  (FirstName + ' ' + LastName) LIKE '%{0}%' OR
+  (LastName + ' ' + FirstName) LIKE '%{0}%'",
+                                            name ) );
         }
 
         public static async Task<PersonInfo[]> SearchAsync( string condition )
