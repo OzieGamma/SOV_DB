@@ -1,4 +1,9 @@
-﻿namespace DBGui.Models
+﻿using System.Linq;
+using System.Threading.Tasks;
+using DB;
+using DBGui.Utilities;
+
+namespace DBGui.Models
 {
     public sealed class PersonInfo
     {
@@ -11,6 +16,23 @@
             Id = id;
             FirstName = firstName;
             LastName = lastName;
+        }
+
+        public static Task<PersonInfo[]> SearchByNameAsync( string name )
+        {
+            return SearchAsync( @"FirstName LIKE '%" + name + "%' OR LastName LIKE '%" + name + "%'" );
+        }
+
+        public static async Task<PersonInfo[]> SearchAsync( string condition )
+        {
+            var table = await Database.ExecuteQueryAsync( @"SELECT Id, FirstName, LastName FROM Person WHERE " + condition );
+            return table.SelectRows( row =>
+                new PersonInfo(
+                    row.GetInt( "Id" ),
+                    row.GetString( "FirstName" ),
+                    row.GetString( "LastName" )
+                )
+            ).ToArray();
         }
     }
 }

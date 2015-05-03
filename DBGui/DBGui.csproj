@@ -79,6 +79,7 @@
     </ApplicationDefinition>
     <Compile Include="Sql\KnownStatements.cs" />
     <Compile Include="Sql\Statement.cs" />
+    <Compile Include="Utilities\DataTableExtensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

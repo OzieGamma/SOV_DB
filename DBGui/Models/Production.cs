@@ -1,4 +1,5 @@
-﻿using DB.Models;
+﻿using System;
+using DB.Models;
 
 namespace DBGui.Models
 {
@@ -15,6 +16,11 @@ namespace DBGui.Models
             Title = title;
             Year = year;
             Genre = genre;
+        }
+
+        protected Production()
+        {
+            throw new NotSupportedException( "Just to compile." );
         }
     }
 }
