@@ -76,31 +76,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
-    <Compile Include="DatabaseImport.cs" />
-    <Compile Include="Models\AlternativePersonName.cs" />
-    <Compile Include="Models\ProductionCharacter.cs" />
+    <Compile Include="Internals\DatabaseImport.cs" />
+    <Compile Include="Internals\ImportModels\AlternativePersonName.cs" />
+    <Compile Include="Internals\ImportModels\ProductionCharacter.cs" />
     <Compile Include="Models\CharacterRole.cs" />
-    <Compile Include="Models\Company.cs" />
+    <Compile Include="Internals\ImportModels\Company.cs" />
     <Compile Include="Models\MovieType.cs" />
-    <Compile Include="Models\Production.cs" />
-    <Compile Include="Models\ProductionCast.cs" />
-    <Compile Include="Models\ProductionCompany.cs" />
+    <Compile Include="Internals\ImportModels\Production.cs" />
+    <Compile Include="Internals\ImportModels\ProductionCast.cs" />
+    <Compile Include="Internals\ImportModels\ProductionCompany.cs" />
     <Compile Include="Models\ProductionGenre.cs" />
-    <Compile Include="Parsing\AlternativePersonNameParser.cs" />
-    <Compile Include="Parsing\AlternativeProductionTitleParser.cs" />
-    <Compile Include="ILineParser.cs" />
-    <Compile Include="Models\AlternativeProductionTitle.cs" />
+    <Compile Include="Internals\Parsing\AlternativePersonNameParser.cs" />
+    <Compile Include="Internals\Parsing\AlternativeProductionTitleParser.cs" />
+    <Compile Include="Internals\Parsing\ILineParser.cs" />
+    <Compile Include="Internals\ImportModels\AlternativeProductionTitle.cs" />
     <Compile Include="Models\Gender.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Parsing\CharacterParser.cs" />
-    <Compile Include="Parsing\CompanyParser.cs" />
-    <Compile Include="Parsing\ParseUtility.cs" />
-    <Compile Include="Parsing\PersonParser.cs" />
-    <Compile Include="Parsing\ProductionCastParser.cs" />
+    <Compile Include="Internals\ImportModels\Person.cs" />
+    <Compile Include="Internals\Parsing\CharacterParser.cs" />
+    <Compile Include="Internals\Parsing\CompanyParser.cs" />
+    <Compile Include="Internals\Parsing\ParseUtility.cs" />
+    <Compile Include="Internals\Parsing\PersonParser.cs" />
+    <Compile Include="Internals\Parsing\ProductionCastParser.cs" />
     <Compile Include="Models\ProductionCompanyKind.cs" />
-    <Compile Include="Parsing\ProductionCompanyParser.cs" />
-    <Compile Include="Parsing\ProductionParser.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Internals\Parsing\ProductionCompanyParser.cs" />
+    <Compile Include="Internals\Parsing\ProductionParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -116,10 +115,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="create_db.sql">
+    <Content Include="SQL\create_db.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Queries.sql" />
+    <Content Include="SQL\Queries.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,10 +1,13 @@
-﻿using System;
+﻿#define SQL_SERVER_2014
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using DB.Internals;
 
 namespace DB
 {
@@ -13,22 +16,14 @@ namespace DB
         private const int Timeout = 1200; // in seconds;
 
         private const string ConnectionString =
-            //  @"Data Source=(LocalDB)\v11.0;Integrated Security=True"; // SQL Server 2012
-            @"Data Source=(LocalDB)\mssqllocaldb;Integrated Security=True"; // SQL Server 2014
-
-        public static Task DisableReferentialIntegrityAsync()
+#if SQL_SERVER_2014
+ @"Data Source=(LocalDB)\mssqllocaldb;Integrated Security=True";
+#else
+ @"Data Source=(LocalDB)\v11.0;Integrated Security=True";
+#endif
+        public static Task ImportFromDirectoryAsync( string directoryPath )
         {
-            return ExecuteNonQueryAsync( @"EXEC sp_MSForeachTable ""DECLARE @name NVARCHAR (MAX); SET @name = PARSENAME('?', 1); EXEC sp_MSdropconstraints @name""", new Dictionary<string, object>() );
-        }
-
-        public static Task DropAllAsync()
-        {
-            return ExecuteNonQueryAsync( @"EXEC sp_MSForeachTable ""DROP TABLE ?"";", new Dictionary<string, object>() );
-        }
-
-        public static Task CreateAllAsync()
-        {
-            return ExecuteAsync( File.ReadAllText( "create_db.sql" ) );
+            return DatabaseImport.ImportFromDirectoryAsync( directoryPath );
         }
 
         public static Task<DataTable> ExecuteQueryAsync( string query )
@@ -41,7 +36,22 @@ namespace DB
             } );
         }
 
-        public static async Task ExecuteNonQueryAsync( string command, IDictionary<string, object> parameters )
+        internal static Task DisableReferentialIntegrityAsync()
+        {
+            return ExecuteNonQueryAsync( @"EXEC sp_MSForeachTable ""DECLARE @name NVARCHAR (MAX); SET @name = PARSENAME('?', 1); EXEC sp_MSdropconstraints @name""", new Dictionary<string, object>() );
+        }
+
+        internal static Task DropAllAsync()
+        {
+            return ExecuteNonQueryAsync( @"EXEC sp_MSForeachTable ""DROP TABLE ?"";", new Dictionary<string, object>() );
+        }
+
+        internal static Task CreateAllAsync()
+        {
+            return ExecuteAsync( File.ReadAllText( Path.Combine( "SQL", "create_db.sql" ) ) );
+        }
+
+        internal static async Task ExecuteNonQueryAsync( string command, IDictionary<string, object> parameters )
         {
             using ( var connection = new SqlConnection( ConnectionString ) )
             {
@@ -79,7 +89,7 @@ namespace DB
             }
         }
 
-        public static async Task ExecuteAsync( string command )
+        internal static async Task ExecuteAsync( string command )
         {
             using ( var connection = new SqlConnection( ConnectionString ) )
             {
