@@ -8,6 +8,9 @@ namespace DBGui
         public CharacterWindow( int id )
         {
             _id = id;
+
+            // TEMP
+            Title = "Character TODO";
         }
     }
 }

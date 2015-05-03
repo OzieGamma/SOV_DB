@@ -25,16 +25,18 @@
             </Bold>
         </TextBlock>
         
-        <TextBlock Grid.Row="1"
-                   Text="{Binding Person.AlternativeNames, Converter={my:StringJoiner}, Mode=OneWay}" />
+        <ItemsControl Grid.Row="1"
+                      ItemsSource="{Binding Person.AlternativeNames, Mode=OneWay}" />
         
         <ListView Grid.Row="2"
-                  ItemsSource="{Binding Source={StaticResource RolesViewSource}, Mode=OneWay}">
+                  ItemsSource="{Binding Source={StaticResource RolesViewSource}, Mode=OneTime}">
             <ListView.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name.Title, Mode=OneTime}" FontWeight="Bold" />
+                            <ContentControl Content="{Binding Name, Mode=OneTime}"
+                                            ContentTemplate="{DynamicResource ProductionInfoTemplate}"
+                                            Style="{DynamicResource ProductionInfoItemStyle}" />
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
                 </GroupStyle>
@@ -42,8 +44,11 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock Text="{Binding Role, Mode=OneTime}" />
-                        <TextBlock Text="{Binding Character.Name, Mode=OneTime}" />
+                        <TextBlock Text="{Binding Role}"
+                                   FontStyle="Italic" />
+                        <ContentControl Content="{Binding Character, Mode=OneTime}"
+                                        ContentTemplate="{DynamicResource CharacterInfoTemplate}"
+                                        Style="{DynamicResource CharacterInfoItemStyle}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

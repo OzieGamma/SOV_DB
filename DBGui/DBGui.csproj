@@ -88,7 +88,6 @@
       <DependentUpon>TextInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WindowBase.cs" />
-    <Compile Include="Controls\Converters.cs" />
     <Compile Include="PersonWindow.xaml.cs">
       <DependentUpon>PersonWindow.xaml</DependentUpon>
     </Compile>

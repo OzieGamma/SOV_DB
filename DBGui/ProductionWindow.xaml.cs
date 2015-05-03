@@ -1,5 +1,4 @@
-﻿using System;
-using DBGui.Models;
+﻿using DBGui.Models;
 
 namespace DBGui
 {
@@ -17,11 +16,9 @@ namespace DBGui
         public ProductionWindow( int id )
         {
             _id = id;
-        }
 
-        protected override void Load()
-        {
-            throw new NotImplementedException();
+            // TEMP
+            Title = "Production TODO";
         }
     }
 }

@@ -26,14 +26,21 @@ namespace DB
             return DatabaseImport.ImportFromDirectoryAsync( directoryPath );
         }
 
-        public static Task<DataTable> ExecuteQueryAsync( string query )
+        public static async Task<DataTable> ExecuteQueryAsync( string query )
         {
-            return Task.Factory.StartNew( () =>
+            using ( var connection = new SqlConnection( ConnectionString ) )
             {
-                var dataTable = new DataTable();
-                new SqlDataAdapter( query, ConnectionString ).Fill( dataTable );
-                return dataTable;
-            } );
+                await connection.OpenAsync();
+                using ( var cmd = new SqlCommand( query, connection ) { CommandTimeout = Timeout } )
+                {
+                    return await Task.Factory.StartNew( () =>
+                    {
+                        var dataTable = new DataTable();
+                        //new SqlDataAdapter( cmd ).Fill( dataTable );
+                        return dataTable;
+                    } );
+                }
+            }
         }
 
         internal static Task DisableReferentialIntegrityAsync()
@@ -56,35 +63,36 @@ namespace DB
             using ( var connection = new SqlConnection( ConnectionString ) )
             {
                 await connection.OpenAsync();
-                var cmd = new SqlCommand( command, connection ) { CommandTimeout = Timeout };
-
-                foreach ( var parameter in parameters )
+                using ( var cmd = new SqlCommand( command, connection ) { CommandTimeout = Timeout } )
                 {
-                    object value;
-                    if ( parameter.Value == null )
+                    foreach ( var parameter in parameters )
                     {
-                        value = DBNull.Value;
-                    }
-                    else
-                    {
-                        var formattable = parameter.Value as IFormattable;
-                        if ( formattable == null )
+                        object value;
+                        if ( parameter.Value == null )
                         {
-                            value = parameter.Value.ToString();
+                            value = DBNull.Value;
                         }
                         else
                         {
-                            value = formattable.ToString( null, CultureInfo.InvariantCulture );
+                            var formattable = parameter.Value as IFormattable;
+                            if ( formattable == null )
+                            {
+                                value = parameter.Value.ToString();
+                            }
+                            else
+                            {
+                                value = formattable.ToString( null, CultureInfo.InvariantCulture );
+                            }
                         }
+                        cmd.Parameters.AddWithValue( parameter.Key, value );
                     }
-                    cmd.Parameters.AddWithValue( parameter.Key, value );
-                }
 
-                int affectedRows = await cmd.ExecuteNonQueryAsync();
+                    int affectedRows = await cmd.ExecuteNonQueryAsync();
 
-                if ( affectedRows == 0 )
-                {
-                    throw new Exception( "Couldn't insert stuff." );
+                    if ( affectedRows == 0 )
+                    {
+                        throw new Exception( "Couldn't insert stuff." );
+                    }
                 }
             }
         }
@@ -94,8 +102,10 @@ namespace DB
             using ( var connection = new SqlConnection( ConnectionString ) )
             {
                 await connection.OpenAsync();
-                var cmd = new SqlCommand( command, connection ) { CommandTimeout = Timeout };
-                await cmd.ExecuteNonQueryAsync();
+                using ( var cmd = new SqlCommand( command, connection ) { CommandTimeout = Timeout } )
+                {
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
         }
     }
