@@ -2,7 +2,51 @@
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:my="clr-namespace:DBGui.Controls">
+    <my:WindowBase.Resources>
+        <CollectionViewSource x:Key="RolesViewSource"
+                              Source="{Binding Person.Roles, Mode=OneWay}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Key" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </my:WindowBase.Resources>
+    
     <Grid>
-        <my:ProgressIndicator x:Name="ProgressIndicator" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <TextBlock FontSize="16">
+            <Run Text="{Binding Person.FirstName, Mode=OneWay}" />
+            <Bold FontWeight="SemiBold">
+                <Run Text="{Binding Person.LastName, Mode=OneWay}" />
+            </Bold>
+        </TextBlock>
+        
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Person.AlternativeNames, Converter={my:StringJoiner}, Mode=OneWay}" />
+        
+        <ListView Grid.Row="2"
+                  ItemsSource="{Binding Source={StaticResource RolesViewSource}, Mode=OneWay}">
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name.Title, Mode=OneTime}" FontWeight="Bold" />
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Role, Mode=OneTime}" />
+                        <TextBlock Text="{Binding Character.Name, Mode=OneTime}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </my:WindowBase>

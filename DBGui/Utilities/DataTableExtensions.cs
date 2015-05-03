@@ -18,9 +18,14 @@ namespace DBGui.Utilities
             }
         }
 
+        public static bool HasValue( this DataRow row, string columnName )
+        {
+            return row[columnName] != DBNull.Value;
+        }
+
         public static string GetString( this DataRow row, string columnName )
         {
-            if ( row[columnName] == DBNull.Value )
+            if ( !row.HasValue( columnName ) )
             {
                 return null;
             }
@@ -34,11 +39,26 @@ namespace DBGui.Utilities
 
         public static int? GetIntOpt( this DataRow row, string columnName )
         {
-            if ( row[columnName] == DBNull.Value )
+            if ( !row.HasValue( columnName ) )
             {
                 return null;
             }
             return (int) row[columnName];
+        }
+
+        public static DateTimeOffset? GetDateOpt( this DataRow row, string columnName )
+        {
+            if ( !row.HasValue( columnName ) )
+            {
+                return null;
+            }
+            return (DateTimeOffset) new DateTimeOffset( (DateTime) row[columnName] );
+        }
+
+        public static T GetEnum<T>( this DataRow row, string columnName )
+            where T : struct
+        {
+            return (T) Enum.Parse( typeof( T ), row.GetString( columnName ) );
         }
 
         public static T? GetEnumOpt<T>( this DataRow row, string columnName )

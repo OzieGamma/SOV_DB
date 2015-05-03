@@ -23,7 +23,11 @@ namespace DBGui.Controls
             _progressIndicator = new ProgressIndicator();
             _progressIndicator.Visibility = Visibility.Collapsed;
             ( (Grid) Content ).Children.Add( _progressIndicator );
+        }
 
+        protected override void OnActivated( EventArgs e )
+        {
+            base.OnActivated( e );
             Load();
         }
 

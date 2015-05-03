@@ -38,5 +38,16 @@ namespace DBGui.Models
                 )
             ).ToArray();
         }
+
+        public override bool Equals( object obj )
+        {
+            var info = obj as ProductionInfo;
+            return info != null && Id == info.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }
