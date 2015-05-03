@@ -9,18 +9,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBGui", "DBGui\DBGui.csproj
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}.Debug|Any CPU.Build.0 = Debug|x64
-		{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}.Debug|Any CPU.Build.0 = Debug|x64
-		{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}.Debug|x64.ActiveCfg = Debug|x64
+		{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}.Debug|x64.Build.0 = Debug|x64
+		{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}.Release|x64.ActiveCfg = Release|x64
+		{DCFE6B1D-DFF9-4C41-B25D-E61C7D6599FE}.Release|x64.Build.0 = Release|x64
+		{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}.Debug|x64.ActiveCfg = Debug|x64
+		{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}.Debug|x64.Build.0 = Debug|x64
+		{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}.Release|x64.ActiveCfg = Release|x64
+		{7B8C1370-4CBA-405F-B62B-E1BCBB05C886}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
