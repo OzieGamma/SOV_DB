@@ -36,7 +36,7 @@ namespace DB
                     return await Task.Factory.StartNew( () =>
                     {
                         var dataTable = new DataTable();
-                        //new SqlDataAdapter( cmd ).Fill( dataTable );
+                        new SqlDataAdapter( cmd ).Fill( dataTable );
                         return dataTable;
                     } );
                 }

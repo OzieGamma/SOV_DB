@@ -9,26 +9,48 @@
                 <PropertyGroupDescription PropertyName="Key" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
     </my:WindowBase.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
-        <TextBlock FontSize="16">
-            <Run Text="{Binding Person.FirstName, Mode=OneWay}" />
-            <Bold FontWeight="SemiBold">
-                <Run Text="{Binding Person.LastName, Mode=OneWay}" />
-            </Bold>
-        </TextBlock>
-        
-        <ItemsControl Grid.Row="1"
-                      ItemsSource="{Binding Person.AlternativeNames, Mode=OneWay}" />
-        
-        <ListView Grid.Row="2"
+
+        <StackPanel>
+            <TextBlock FontSize="16">
+                <Run Text="{Binding Person.FirstName, Mode=OneWay}" />
+                <Bold FontWeight="SemiBold">
+                    <Run Text="{Binding Person.LastName, Mode=OneWay}" />
+                </Bold>
+                <Run Text="{Binding Person.Gender, Mode=OneWay, StringFormat='({0})', TargetNullValue=''}" />
+            </TextBlock>
+            <TextBlock FontSize="13" Text="{Binding Person.BirthName, Mode=OneWay, StringFormat='Born as {0}', TargetNullValue=''}" />
+            <TextBlock FontSize="14">
+                <Run Text="{Binding Person.BirthDate, StringFormat='d', TargetNullValue='Unknown birth date', Mode=OneWay}" />
+                <Run Text="-" />
+                <Run Text="{Binding Person.DeathDate, StringFormat='d', Mode=OneWay}" />
+            </TextBlock>
+            
+            <TextBlock Text="{Binding Person.Height, Mode=OneWay, StringFormat='{}{0} cm tall', TargetNullValue=''}" />
+
+            <TextBlock Text="{Binding Person.AlternativeNames, Converter={my:StringJoiner}, Mode=OneWay, StringFormat='Also known as {0}.', TargetNullValue=''}" />
+
+            <TextBlock Text="{Binding Person.SpouseInfo, StringFormat='Spouse(s): {0}', Mode=OneWay, TargetNullValue=''}" />
+
+            <TextBlock Text="{Binding Person.ShortBio, Mode=OneWay}" />
+
+            <TextBlock Text="{Binding Person.Trivia, Mode=OneWay}" />
+
+            <TextBlock Text="{Binding Person.Quotes, Mode=OneWay}" FontStyle="Italic" />
+        </StackPanel>
+
+        <ListView Grid.Row="1"
                   ItemsSource="{Binding Source={StaticResource RolesViewSource}, Mode=OneTime}">
             <ListView.GroupStyle>
                 <GroupStyle>

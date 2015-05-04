@@ -14,8 +14,8 @@ namespace DBGui.Controls
 
         public WindowBase()
         {
-            Width = 600;
-            Height = 500;
+            Width = 800;
+            Height = 800;
             Title = "Database project";
 
             DataContext = this;

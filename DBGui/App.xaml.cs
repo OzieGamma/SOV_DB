@@ -22,19 +22,28 @@ namespace DBGui
         private void PersonInfo_MouseDoubleClick( object sender, MouseButtonEventArgs e )
         {
             var info = (PersonInfo) ( (ContentControl) sender ).Content;
-            new PersonWindow( info.Id ).Show();
+            if ( info != null )
+            {
+                new PersonWindow( info.Id ).Show();
+            }
         }
 
         private void ProductionInfo_MouseDoubleClick( object sender, MouseButtonEventArgs e )
         {
             var info = (ProductionInfo) ( (ContentControl) sender ).Content;
-            new ProductionWindow( info.Id ).Show();
+            if ( info != null )
+            {
+                new ProductionWindow( info.Id ).Show();
+            }
         }
 
         private void CharacterInfo_MouseDoubleClick( object sender, MouseButtonEventArgs e )
         {
             var info = (CharacterInfo) ( (ContentControl) sender ).Content;
-            new CharacterWindow( info.Id ).Show();
+            if ( info != null )
+            {
+                new CharacterWindow( info.Id ).Show();
+            }
         }
     }
 }
