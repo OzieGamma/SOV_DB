@@ -10,10 +10,10 @@ namespace DBGui.Models
     {
         public MovieType Type { get; private set; }
 
-        public static async Task<Movie> GetAsync( int id )
+        public new static async Task<Movie> GetAsync( int id )
         {
             var table = await Database.ExecuteQueryAsync(
-                @"SELECT Id, Title, ReleaseYear, Genre, Type FROM
+                @"SELECT Id, Title, ReleaseYear, Genre, MovieType FROM
                   Production JOIN Movie ON Production.Id = Movie.ProductionId
                   WHERE Id = " + id );
             return table.SelectRows( row =>
@@ -23,7 +23,7 @@ namespace DBGui.Models
                     Title = row.GetString( "Title" ),
                     Year = row.GetIntOpt( "ReleaseYear" ),
                     Genre = row.GetEnumOpt<ProductionGenre>( "Genre" ),
-                    Type = row.GetEnum<MovieType>( "Type" )
+                    Type = row.GetEnum<MovieType>( "MovieType" )
                 } )
                 .Single();
         }

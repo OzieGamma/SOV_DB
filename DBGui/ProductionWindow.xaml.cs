@@ -16,9 +16,11 @@ namespace DBGui
         public ProductionWindow( int id )
         {
             _id = id;
+        }
 
-            // TEMP
-            Title = "Production TODO";
+        protected override void Load()
+        {
+            DoAsync( async () => Production = await Production.GetAsync( _id ) );
         }
     }
 }

@@ -19,10 +19,10 @@ namespace DBGui.Models
             var table = await Database.ExecuteQueryAsync(
                 @"SELECT VideoGame.ProductionId AS VideoGame, Movie.ProductionId AS Movie, Series.ProductionId AS Series, SeriesEpisode.ProductionId AS SeriesEpisode
                   FROM Production
-                    JOIN VideoGame ON Production.Id = VideoGame.ProductionId
-                    JOIN Movie ON Production.Id = Movie.ProductionId
-                    JOIN Series ON Production.Id = Series.ProductionId
-                    JOIN SeriesEpisode ON Production.Id = SeriesEpisode.ProductionId
+                    LEFT JOIN VideoGame ON Production.Id = VideoGame.ProductionId
+                    LEFT JOIN Movie ON Production.Id = Movie.ProductionId
+                    LEFT JOIN Series ON Production.Id = Series.ProductionId
+                    LEFT JOIN SeriesEpisode ON Production.Id = SeriesEpisode.ProductionId
                   WHERE Production.Id = " + id );
             var row = table.SelectRows( r => r ).Single();
 

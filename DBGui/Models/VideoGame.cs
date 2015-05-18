@@ -8,7 +8,7 @@ namespace DBGui.Models
 {
     public sealed class VideoGame : Production
     {
-        public static async Task<VideoGame> GetAsync( int id )
+        public new static async Task<VideoGame> GetAsync( int id )
         {
             var table = await Database.ExecuteQueryAsync(
                 @"SELECT Id, Title, ReleaseYear, Genre FROM

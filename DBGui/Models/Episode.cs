@@ -13,7 +13,7 @@ namespace DBGui.Models
         public int? SeasonNumber { get; private set; }
         public int? EpisodeNumber { get; private set; }
 
-        public static async Task<Episode> GetAsync( int id )
+        public new static async Task<Episode> GetAsync( int id )
         {
             var table = await Database.ExecuteQueryAsync(
                 @"SELECT Id, Title, ReleaseYear, Genre, SeriesId, SeasonNumber, EpisodeNumber FROM

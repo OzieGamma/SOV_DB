@@ -12,11 +12,11 @@ namespace DBGui.Models
         public int? EndYear { get; private set; }
         public ProductionInfo[] Episodes { get; private set; }
 
-        public static async Task<Series> GetAsync( int id )
+        public new static async Task<Series> GetAsync( int id )
         {
             var table = await Database.ExecuteQueryAsync(
                 @"SELECT Id, Title, ReleaseYear, Genre, BeginningYear, EndYear FROM
-                  Production JOIN SeriesEpisode ON Production.Id = SeriesEpisode.ProductionId
+                  Production JOIN Series ON Production.Id = Series.ProductionId
                   WHERE Id = " + id );
             var series = table.SelectRows( row =>
                 new Series
