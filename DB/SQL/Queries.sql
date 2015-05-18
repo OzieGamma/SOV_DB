@@ -16,10 +16,9 @@ SELECT MIN(temp.Duration) AS MinDuration, MAX(temp.Duration) AS MaxDuration, AVG
 FROM
 (
     SELECT MAX(ShortProd.ReleaseYear) - MIN(ShortProd.ReleaseYear) + 1 AS Duration
-    FROM (SELECT Id FROM Person) AS ShortPerson
-    JOIN ProductionCast ON ProductionCast.PersonId = ShortPerson.Id
+    FROM ProductionCast
     JOIN (SELECT Id, ReleaseYear FROM Production) AS ShortProd ON ShortProd.Id = ProductionCast.ProductionId
-    GROUP BY ShortPerson.Id
+    GROUP BY ProductionCast.PersonId
 ) AS temp;
 
 -- d) Compute the min, max and average number of actors in a production.
@@ -28,6 +27,7 @@ FROM
 (
     SELECT COUNT(*) AS value
     FROM ProductionCast
+    WHERE CastRole IN ('Actor', 'Actress')
     GROUP BY ProductionId
 ) AS number;
 
@@ -50,10 +50,11 @@ WHERE ProductionCast.CastRole IN ('Actor', 'Actress')
 
 
 -- g) List the three most popular character names
-SELECT TOP 3 Name, COUNT(*) AS NameCount
-FROM ProductionCharacter
-GROUP BY Name
-ORDER BY COUNT(*) DESC;
+SELECT TOP 3 Name, COUNT(*) AS Popularity
+FROM ProductionCast -- Counts several appearances of the same character several times.
+JOIN ProductionCharacter ON ProductionCharacter.Id = ProductionCast.CharacterId
+GROUP BY ProductionCharacter.Name
+ORDER BY COUNT(*) DESC
 
 -- 3.a) Find the actors and actresses (and report the productions) who played in a production where they were 55 or more year older than the youngest actor/actress playing.
 SELECT DISTINCT FirstName, LastName, Production.Title
@@ -202,10 +203,16 @@ JOIN Company ON Company.Id = CompanyId
 WHERE Rank <= 3
 ORDER BY ReleaseYear, NumMovies DESC
 
+SELECT SERVERPROPERTY('COLLATION')
+
 -- 3.l) List all living people who are opera singers ordered from youngest to oldest.
--- SELECT *
--- FROM ProductionCast
--- WHERE ProductionCast.CastRole = ''
+SELECT FirstName, LastName, BirthDate
+FROM Person
+WHERE Trivia LIKE '%opera%' COLLATE SQL_Latin1_General_CP1_CI_AS  -- Make sure it is case insensitive
+    OR Quotes LIKE '%opera%' COLLATE SQL_Latin1_General_CP1_CI_AS 
+    OR ShortBio LIKE '%opera%' COLLATE SQL_Latin1_General_CP1_CI_AS 
+    AND BirthDate IS NOT NULL 
+ORDER BY BirthDate DESC
 
 -- 3.m) List 10 most ambiguous credits (pairs of people and productions) ordered by the degree of ambiguity.
 -- A credit is ambiguous if either a person has multiple alternative names or a production has multiple alternative titles. 
