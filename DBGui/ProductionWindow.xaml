@@ -10,31 +10,40 @@
         </Style>
 
         <DataTemplate DataType="{x:Type models:Movie}">
-            <TextBlock Text="Movie" />
+            <StackPanel>
+                <TextBlock Text="Movie" />
+                
+                <TextBlock Text="{Binding Type, Mode=OneWay}" />
+            </StackPanel>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:Series}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                
-                <TextBlock>
+
+
+                <TextBlock Text="Series" />
+
+                <TextBlock Grid.Row="1">
                     <Run Text="{Binding BeginningYear, TargetNullValue='Unknown beginning', Mode=OneWay}" />
                     <Run Text="-" />
                     <Run Text="{Binding EndYear, Mode=OneWay}" />
                 </TextBlock>
 
-                <ListView Grid.Row="1"
+                <ListView Grid.Row="2"
                           ItemsSource="{Binding Episodes, Mode=OneWay}"
-                          ItemTemplate="{DynamicResource ProductionInfoTemplate}"
-                          ItemContainerStyle="{DynamicResource ProductionInfoItemStyle}" />
+                          ItemTemplate="{DynamicResource ProductionInfoTemplate}" />
             </Grid>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:Episode}">
             <StackPanel>
+                <TextBlock Text="Episode" />
+                
                 <TextBlock Text="Part of the series" />
                 <ContentControl Content="{Binding Series, Mode=OneWay}"
                                 ContentTemplate="{DynamicResource ProductionInfoTemplate}" />
@@ -68,6 +77,6 @@
         
         <ContentControl Grid.Row="1"
                         Content="{Binding Production, Mode=OneWay}"
-                        Margin="5,0" />
+                        Margin="5" />
     </Grid>
 </my:WindowBase>

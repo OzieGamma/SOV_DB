@@ -23,11 +23,9 @@
                 <DataTemplate>
                     <StackPanel>
                         <ContentControl Content="{Binding Key}"
-                                        ContentTemplate="{DynamicResource ProductionInfoTemplate}"
-                                        Style="{DynamicResource ProductionInfoItemStyle}" />
+                                        ContentTemplate="{DynamicResource ProductionInfoTemplate}" />
                         <ListView ItemsSource="{Binding}" 
-                                  ItemTemplate="{DynamicResource PersonInfoTemplate}"
-                                  ItemContainerStyle="{DynamicResource PersonInfoItemStyle}" />
+                                  ItemTemplate="{DynamicResource PersonInfoTemplate}" />
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

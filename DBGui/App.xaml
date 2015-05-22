@@ -36,19 +36,16 @@
 
         <!-- Styles for info listviews -->
         <DataTemplate x:Key="PersonInfoTemplate">
-            <TextBlock>
+            <TextBlock MouseDown="PersonInfo_Click">
                 <Run Text="{Binding FirstName, Mode=OneTime}" />
                 <Bold>
                     <Run Text="{Binding LastName, Mode=OneTime}" />
                 </Bold>
             </TextBlock>
         </DataTemplate>
-        <Style x:Key="PersonInfoItemStyle" TargetType="ContentControl">
-            <EventSetter Event="MouseDoubleClick" Handler="PersonInfo_MouseDoubleClick" />
-        </Style>
 
         <DataTemplate x:Key="ProductionInfoTemplate">
-            <TextBlock>
+            <TextBlock MouseDown="ProductionInfo_Click">
                 <Bold>
                     <Run Text="{Binding Title, Mode=OneTime}" />
                 </Bold>
@@ -58,16 +55,11 @@
                 <Run Text="{Binding Genre, StringFormat='({0})', TargetNullValue='', Mode=OneTime}" />
             </TextBlock>
         </DataTemplate>
-        <Style x:Key="ProductionInfoItemStyle" TargetType="ContentControl">
-            <EventSetter Event="MouseDoubleClick" Handler="ProductionInfo_MouseDoubleClick" />
-        </Style>
 
         <DataTemplate x:Key="CharacterInfoTemplate">
-            <TextBlock Text="{Binding Name, Mode=OneTime}" />
+            <TextBlock Text="{Binding Name, Mode=OneTime}"
+                       MouseDown="CharacterInfo_Click" />
         </DataTemplate>
-        <Style x:Key="CharacterInfoItemStyle" TargetType="ContentControl">
-            <EventSetter Event="MouseDoubleClick" Handler="CharacterInfo_MouseDoubleClick" />
-        </Style>
 
         <Style TargetType="ItemsControl">
             <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />

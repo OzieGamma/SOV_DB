@@ -36,8 +36,7 @@
 
                     <ListView x:Name="PeopleView"
                               Grid.Row="2"
-                              ItemTemplate="{StaticResource PersonInfoTemplate}"
-                              ItemContainerStyle="{StaticResource PersonInfoItemStyle}" />
+                              ItemTemplate="{StaticResource PersonInfoTemplate}" />
                 </Grid>
             </TabItem>
 
@@ -58,8 +57,7 @@
 
                     <ListView x:Name="ProductionsView"
                               Grid.Row="2"
-                              ItemTemplate="{StaticResource ProductionInfoTemplate}"
-                              ItemContainerStyle="{StaticResource ProductionInfoItemStyle}" />
+                              ItemTemplate="{StaticResource ProductionInfoTemplate}" />
                 </Grid>
             </TabItem>
 
@@ -80,8 +78,7 @@
 
                     <ListView x:Name="CharactersView"
                               Grid.Row="2"
-                              ItemTemplate="{StaticResource CharacterInfoTemplate}"
-                              ItemContainerStyle="{StaticResource CharacterInfoItemStyle}" />
+                              ItemTemplate="{StaticResource CharacterInfoTemplate}" />
                 </Grid>
             </TabItem>
 
