@@ -16,7 +16,7 @@ namespace DBGui
             };
 #endif
 
-            new ProductionWindow( 1 ).Show();
+            new ProductionWindow( 2 ).Show();
         }
 
         private void PersonInfo_MouseDoubleClick( object sender, MouseButtonEventArgs e )

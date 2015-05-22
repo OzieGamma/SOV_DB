@@ -14,7 +14,23 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:Series}">
-            <TextBlock Text="Series" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <TextBlock>
+                    <Run Text="{Binding BeginningYear, TargetNullValue='Unknown beginning', Mode=OneWay}" />
+                    <Run Text="-" />
+                    <Run Text="{Binding EndYear, Mode=OneWay}" />
+                </TextBlock>
+
+                <ListView Grid.Row="1"
+                          ItemsSource="{Binding Episodes, Mode=OneWay}"
+                          ItemTemplate="{DynamicResource ProductionInfoTemplate}"
+                          ItemContainerStyle="{DynamicResource ProductionInfoItemStyle}" />
+            </Grid>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:Episode}">
@@ -27,6 +43,21 @@
     </my:WindowBase.Resources>
     
     <Grid>
-        <ContentControl Content="{Binding Production}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <StackPanel>
+            <TextBlock Text="{Binding Production.Title, Mode=OneWay}"
+                       FontSize="16"
+                       FontWeight="SemiBold" />
+            <TextBlock Text="{Binding Production.Year, Mode=OneWay}" />
+            <TextBlock Text="{Binding Production.Genre, Mode=OneWay}" />
+        </StackPanel>
+        
+        <ContentControl Grid.Row="1"
+                        Content="{Binding Production, Mode=OneWay}"
+                        Margin="5,0" />
     </Grid>
 </my:WindowBase>

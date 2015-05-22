@@ -13,13 +13,13 @@ namespace DBGui.Models
         public new static async Task<Movie> GetAsync( int id )
         {
             var table = await Database.ExecuteQueryAsync(
-                @"SELECT Id, Title, ReleaseYear, Genre, MovieType FROM
+                @"SELECT ProductionId, Title, ReleaseYear, Genre, MovieType FROM
                   Production JOIN Movie ON Production.Id = Movie.ProductionId
                   WHERE Id = " + id );
             return table.SelectRows( row =>
                 new Movie
                 {
-                    Id = row.GetInt( "Id" ),
+                    Id = row.GetInt( "ProductionId" ),
                     Title = row.GetString( "Title" ),
                     Year = row.GetIntOpt( "ReleaseYear" ),
                     Genre = row.GetEnumOpt<ProductionGenre>( "Genre" ),

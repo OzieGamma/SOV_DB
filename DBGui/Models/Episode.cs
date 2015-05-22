@@ -16,13 +16,13 @@ namespace DBGui.Models
         public new static async Task<Episode> GetAsync( int id )
         {
             var table = await Database.ExecuteQueryAsync(
-                @"SELECT Id, Title, ReleaseYear, Genre, SeriesId, SeasonNumber, EpisodeNumber FROM
+                @"SELECT ProductionId, Title, ReleaseYear, Genre, SeriesId, SeasonNumber, EpisodeNumber FROM
                   Production JOIN SeriesEpisode ON Production.Id = SeriesEpisode.ProductionId
                   WHERE Id = " + id );
             var episode = table.SelectRows( row =>
                 Tuple.Create( new Episode
                 {
-                    Id = row.GetInt( "Id" ),
+                    Id = row.GetInt( "ProductionId" ),
                     Title = row.GetString( "Title" ),
                     Year = row.GetIntOpt( "ReleaseYear" ),
                     Genre = row.GetEnumOpt<ProductionGenre>( "Genre" ),
@@ -31,10 +31,10 @@ namespace DBGui.Models
                 }, row.GetInt( "SeriesId" ) ) )
                 .Single();
 
-            var seriesInfo = await Database.ExecuteQueryAsync( "SELECT Id, Title, ReleaseYear, Genre FROM Series WHERE Id = " + episode.Item2 );
+            var seriesInfo = await Database.ExecuteQueryAsync( "SELECT Id, Title, ReleaseYear, Genre FROM Production WHERE Id = " + episode.Item2 );
             episode.Item1.Series = seriesInfo.SelectRows(
                 row => new ProductionInfo(
-                        row.GetInt( "ProdId" ),
+                        row.GetInt( "Id" ),
                         row.GetString( "Title" ),
                         row.GetIntOpt( "ReleaseYear" ),
                         row.GetEnumOpt<ProductionGenre>( "Genre" ) ) ).Single();

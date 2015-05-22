@@ -15,13 +15,13 @@ namespace DBGui.Models
         public new static async Task<Series> GetAsync( int id )
         {
             var table = await Database.ExecuteQueryAsync(
-                @"SELECT Id, Title, ReleaseYear, Genre, BeginningYear, EndYear FROM
+                @"SELECT ProductionId, Title, ReleaseYear, Genre, BeginningYear, EndYear FROM
                   Production JOIN Series ON Production.Id = Series.ProductionId
                   WHERE Id = " + id );
             var series = table.SelectRows( row =>
                 new Series
                 {
-                    Id = row.GetInt( "Id" ),
+                    Id = row.GetInt( "ProductionId" ),
                     Title = row.GetString( "Title" ),
                     Year = row.GetIntOpt( "ReleaseYear" ),
                     Genre = row.GetEnumOpt<ProductionGenre>( "Genre" ),
@@ -30,11 +30,11 @@ namespace DBGui.Models
                 } )
                 .Single();
 
-            var episodesInfo = await Database.ExecuteQueryAsync( @"SELECT Id, Title, ReleaseYear, Genre FROM 
+            var episodesInfo = await Database.ExecuteQueryAsync( @"SELECT ProductionId, Title, ReleaseYear, Genre FROM 
 Production JOIN SeriesEpisode ON Production.Id = SeriesEpisode.ProductionId WHERE SeriesId = " + id );
             series.Episodes = episodesInfo.SelectRows(
                 row => new ProductionInfo(
-                        row.GetInt( "ProdId" ),
+                        row.GetInt( "ProductionId" ),
                         row.GetString( "Title" ),
                         row.GetIntOpt( "ReleaseYear" ),
                         row.GetEnumOpt<ProductionGenre>( "Genre" ) ) ).ToArray();
