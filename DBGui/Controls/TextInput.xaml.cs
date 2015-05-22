@@ -33,6 +33,12 @@ namespace DBGui.Controls
             InitializeComponent();
         }
 
+        public void Execute( string text )
+        {
+            Box.Text = text;
+            Execute();
+        }
+
         public event Action<string> Executed;
 
         private void Button_Click( object sender, RoutedEventArgs e )

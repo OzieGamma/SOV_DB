@@ -1,6 +1,8 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using DB;
 using DBGui.Models;
+using DBGui.Sql;
 using WinForms = System.Windows.Forms;
 
 namespace DBGui
@@ -11,6 +13,9 @@ namespace DBGui
         {
             DataContext = this;
             InitializeComponent();
+
+            KnownQueries2.ItemsSource = KnownStatements.Part2;
+            KnownQueries3.ItemsSource = KnownStatements.Part3;
         }
 
         private void ImportMenu_Click( object sender, RoutedEventArgs e )
@@ -58,6 +63,13 @@ namespace DBGui
         private void RawInput_Executed( string text )
         {
             DoAsync( async () => RawQueryResultsView.ItemsSource = ( await Database.ExecuteQueryAsync( text ) ).DefaultView );
+        }
+
+        private void StatementButton_Click( object sender, RoutedEventArgs e )
+        {
+            var statement = (Statement) ( (Button) sender ).DataContext;
+            RawDescriptionBlock.Text = statement.Description;
+            RawInput.Execute( statement.Command );
         }
     }
 }

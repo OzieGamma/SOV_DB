@@ -8,15 +8,11 @@ namespace DBGui
     {
         public App()
         {
-#if !DEBUG
             DispatcherUnhandledException += ( sender, args ) =>
             {
                 System.Windows.MessageBox.Show( args.Exception.ToString(), "Error" );
                 args.Handled = true;
             };
-#endif
-
-            new ProductionWindow( 2102036 ).Show();
         }
 
         private void PersonInfo_Click( object sender, EventArgs e )

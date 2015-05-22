@@ -86,5 +86,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <Style TargetType="ItemsControl" x:Key="SimpleItemsControl">
+            
+        </Style>
     </Application.Resources>
 </Application>

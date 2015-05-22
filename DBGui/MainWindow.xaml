@@ -7,7 +7,7 @@
             <Setter Property="Margin" Value="2" />
         </Style>
     </my:WindowBase.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -83,17 +83,51 @@
             </TabItem>
 
             <TabItem Header="Raw queries">
+                <TabItem.Resources>
+                    <DataTemplate x:Key="KnownStatementTemplate">
+                        <Button Content="{Binding Name, Mode=OneWay}"
+                                Click="StatementButton_Click"
+                                Margin="5"
+                                Height="30" />
+                    </DataTemplate>
+                    <ItemsPanelTemplate x:Key="HorizontalPanel">
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </TabItem.Resources>
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="100" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <my:TextInput ButtonText="Query"
+                    <GroupBox Header="Deliverable 2">
+                        <ItemsControl x:Name="KnownQueries2"
+                                      Style="{DynamicResource SimpleItemsControl}"
+                                      ItemsPanel="{DynamicResource HorizontalPanel}"
+                                      ItemTemplate="{DynamicResource KnownStatementTemplate}" />
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="1" 
+                              Header="Deliverable 3">
+                        <ItemsControl x:Name="KnownQueries3"
+                                      Style="{DynamicResource SimpleItemsControl}"
+                                      ItemsPanel="{DynamicResource HorizontalPanel}"
+                                      ItemTemplate="{DynamicResource KnownStatementTemplate}" />
+                    </GroupBox>
+
+                    <TextBlock Grid.Row="2"
+                               x:Name="RawDescriptionBlock" />
+
+                    <my:TextInput Grid.Row="3"
+                                  x:Name="RawInput"
+                                  ButtonText="Query"
                                   IsMultiline="True"
                                   Executed="RawInput_Executed" />
 
-                    <DataGrid Grid.Row="1"
+                    <DataGrid Grid.Row="4"
                               x:Name="RawQueryResultsView"
                               IsReadOnly="True" />
                 </Grid>
