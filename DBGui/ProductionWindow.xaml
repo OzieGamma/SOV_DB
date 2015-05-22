@@ -34,7 +34,17 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:Episode}">
-            <TextBlock Text="Episode" />
+            <StackPanel>
+                <TextBlock Text="Part of the series" />
+                <ContentControl Content="{Binding Series, Mode=OneWay}"
+                                ContentTemplate="{DynamicResource ProductionInfoTemplate}" />
+                
+                <TextBlock>
+                    <Run Text="{Binding SeasonNumber, StringFormat='Season {0}', TargetNullValue='Unknown season', Mode=OneWay}" />
+                    <Run Text="-" />
+                    <Run Text="{Binding EpisodeNumber, StringFormat='Episode {0}', TargetNullValue='Unknown episode number', Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:VideoGame}">
