@@ -97,14 +97,14 @@ namespace DB
             }
         }
 
-        internal static async Task ExecuteAsync( string command )
+        public static async Task<int> ExecuteAsync( string command )
         {
             using ( var connection = new SqlConnection( ConnectionString ) )
             {
                 await connection.OpenAsync();
                 using ( var cmd = new SqlCommand( command, connection ) { CommandTimeout = Timeout } )
                 {
-                    await cmd.ExecuteNonQueryAsync();
+                    return await cmd.ExecuteNonQueryAsync();
                 }
             }
         }

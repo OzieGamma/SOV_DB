@@ -132,6 +132,22 @@
                               IsReadOnly="True" />
                 </Grid>
             </TabItem>
+            
+            <TabItem Header="Insert">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    
+                    <my:TextInput ButtonText="Execute"
+                                  IsMultiline="True"
+                                  Executed="RawInsert_Executed" />
+                    
+                    <TextBlock Grid.Row="2"
+                               x:Name="RawInputResultsBlock" />
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </my:WindowBase>

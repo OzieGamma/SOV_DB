@@ -65,6 +65,11 @@ namespace DBGui
             DoAsync( async () => RawQueryResultsView.ItemsSource = ( await Database.ExecuteQueryAsync( text ) ).DefaultView );
         }
 
+        private void RawInsert_Executed( string text )
+        {
+            DoAsync( async () => RawInputResultsBlock.Text = ( await Database.ExecuteAsync( text ) ).ToString() + " rows affected." );
+        }
+
         private void StatementButton_Click( object sender, RoutedEventArgs e )
         {
             var statement = (Statement) ( (Button) sender ).DataContext;
