@@ -1,5 +1,5 @@
 ﻿-- a) Compute the number of movies per year. Make sure to include tv and video movies.
-SELECT ReleaseYear, COUNT(*) 
+SELECT ReleaseYear, COUNT(*) AS NumMovies
 FROM Movie JOIN Production ON Movie.ProductionId = Production.Id 
 GROUP BY ReleaseYear;
 
