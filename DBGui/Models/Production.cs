@@ -13,6 +13,8 @@ namespace DBGui.Models
         public int? Year { get; protected set; }
         public ProductionGenre? Genre { get; protected set; }
 
+        public ILookup<PersonInfo, PersonRoleInfo> People { get; protected set; }
+
         public static async Task<Production> GetAsync( int id )
         {
             // First, get the type
@@ -42,6 +44,21 @@ namespace DBGui.Models
             }
 
             return await Episode.GetAsync( id );
+        }
+
+        protected static async Task<ILookup<PersonInfo, PersonRoleInfo>> GetCharactersAsync( int id )
+        {
+            var table = await Database.ExecuteQueryAsync(
+                @"SELECT PersonId, Person.LastName, Person.FirstName, CastRole, CharacterId, ProductionCharacter.Name
+                  FROM ProductionCast
+                    LEFT JOIN ProductionCharacter ON ProductionCast.CharacterId = ProductionCharacter.Id
+                    LEFT JOIN Person ON ProductionCast.PersonId = Person.Id
+                  WHERE ProductionId = " + id );
+            return table.SelectRows( r => r )
+                        .ToLookup(
+                            row => new PersonInfo( row.GetInt( "PersonId" ), row.GetString( "FirstName" ), row.GetString( "LastName" ) ),
+                            row => new PersonRoleInfo( row.GetEnum<PersonRole>( "CastRole" ), row.HasValue( "CharacterId" ) ? new CharacterInfo( row.GetInt( "CharacterId" ), row.GetString( "Name" ) ) : null )
+                        );
         }
     }
 }

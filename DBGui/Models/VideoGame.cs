@@ -13,7 +13,7 @@ namespace DBGui.Models
             var table = await Database.ExecuteQueryAsync(
                 @"SELECT Id, Title, ReleaseYear, Genre FROM
                   Production WHERE Id = " + id );
-            return table.SelectRows( row =>
+            var game = table.SelectRows( row =>
                 new VideoGame
                 {
                     Id = row.GetInt( "Id" ),
@@ -22,6 +22,8 @@ namespace DBGui.Models
                     Genre = row.GetEnumOpt<ProductionGenre>( "Genre" )
                 } )
                 .Single();
+            game.People = await GetCharactersAsync( id );
+            return game;
         }
     }
 }

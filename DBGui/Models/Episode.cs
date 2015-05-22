@@ -39,6 +39,8 @@ namespace DBGui.Models
                         row.GetIntOpt( "ReleaseYear" ),
                         row.GetEnumOpt<ProductionGenre>( "Genre" ) ) ).Single();
 
+            episode.Item1.People = await GetCharactersAsync( id );
+
             return episode.Item1;
         }
     }

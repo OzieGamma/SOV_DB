@@ -36,7 +36,7 @@ namespace DBGui.Controls
     {
         protected override string Convert( IEnumerable<string> value )
         {
-            return string.Join( "; ", value );
+            return value == null ? null : ( value.GetEnumerator().MoveNext() ? string.Join( "; ", value ) : null );
         }
     }
 }

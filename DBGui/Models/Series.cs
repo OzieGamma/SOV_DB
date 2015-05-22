@@ -39,6 +39,7 @@ Production JOIN SeriesEpisode ON Production.Id = SeriesEpisode.ProductionId WHER
                         row.GetIntOpt( "ReleaseYear" ),
                         row.GetEnumOpt<ProductionGenre>( "Genre" ) ) ).ToArray();
 
+            series.People = await GetCharactersAsync( id );
             return series;
         }
     }
