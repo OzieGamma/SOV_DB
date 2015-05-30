@@ -362,7 +362,7 @@ Query execution time too long >= 30 min. With TOP 10 we achieved 70000ms
 */
 SELECT DISTINCT a.FirstName AS FirstPerson, b.FirstName AS SecondPerson, a.LastName
 FROM Person a
-JOIN Person b ON a.LastName = b.LastName AND a.Id > b.Id -- TODO: Make sure we only get one of the pair ('bob', 'john') and  ('john', 'bob')
+JOIN Person b ON a.LastName = b.LastName AND a.Id > b.Id -- Make sure we only get one of the pair ('bob', 'john') and  ('john', 'bob')
 JOIN ProductionCast castA ON castA.PersonId = a.Id
 JOIN ProductionCast castB ON castB.PersonId = b.Id AND castA.ProductionId = castB.ProductionId
 
