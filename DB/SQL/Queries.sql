@@ -600,8 +600,6 @@ JOIN Company ON Company.Id = CompanyId
 WHERE Rank <= 3
 ORDER BY ReleaseYear, NumMovies DESC
 
-SELECT SERVERPROPERTY('COLLATION')
-
 /* 3.l) List all living people who are opera singers ordered from youngest to oldest.
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
