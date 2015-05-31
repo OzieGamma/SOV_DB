@@ -310,34 +310,10 @@ WHERE Rank <= 1
 /* 3.c) Given a year, list the company with the highest number of productions in each genre.
 NOTE: NULL for Genre & ReleaseYear doesn't really make sense, so we removed it.
 
-SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
-SQL Server parse and compile time: 
-   CPU time = 0 ms, elapsed time = 14 ms.
-
-    (6526 row(s) affected)
-    
-Table 'Workfile'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Company'. Scan count 2, logical reads 5088, physical reads 3, read-ahead reads 2540, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'ProductionCompany'. Scan count 1, logical reads 26783, physical reads 0, read-ahead reads 26783, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Production'. Scan count 1, logical reads 28651, physical reads 0, read-ahead reads 28544, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-
-    (1 row(s) affected)
-    
-
- SQL Server Execution Times:
-   CPU time = 5593 ms,  elapsed time = 5771 ms.
-SQL Server parse and compile time: 
-   CPU time = 0 ms, elapsed time = 0 ms.
-
- SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
-
-
+    See analysis
  Our query will display all exe-quos
 */
-SELECT DISTINCT ReleaseYear, Genre, ProductionCount, Company.Name
+SELECT DISTINCT ReleaseYear, Genre, ProductionCount, Company.Name, CompanyId
 FROM(
     SELECT DISTINCT *, RANK() OVER (PARTITION BY ReleaseYear, Genre ORDER BY ProductionCount DESC) AS Rank
     FROM (
@@ -351,7 +327,7 @@ FROM(
         GROUP BY Company.Id, Production.ReleaseYear, Production.Genre
     ) AS ProductionsPerCompanyPerGenre
 ) AS ProductionsPerCompanyPerGenreWithRank
-JOIN Company ON  Company.Id = CompanyId
+JOIN Company ON  Company.Id = CompanyId -- Several companies can have the same name
 WHERE Rank <= 1
 ORDER BY ReleaseYear ASC, Genre DESC
 
@@ -631,37 +607,13 @@ WHERE Trivia LIKE '%opera%' COLLATE SQL_Latin1_General_CP1_CI_AS  -- Make sure i
 ORDER BY BirthDate DESC
 
 /* 3.m) List 10 most ambiguous credits (pairs of people and productions) ordered by the degree of ambiguity.
-NOTE: we list the ids since by deffinition of ambiguity we would have to list a lot of confusing names.
+NOTE: we list the ids since by definition of ambiguity we would have to list a lot of confusing names.
 
  A credit is ambiguous if either a person has multiple alternative names or a production has multiple alternative titles. 
  The degree of ambiguity is a product of the number of possible names (real name + all alternatives) 
  and the number of possible titles (real + alternatives).
- SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
-SQL Server parse and compile time: 
-   CPU time = 15 ms, elapsed time = 18 ms.
-
-    (10 row(s) affected)
-    
-Table 'Workfile'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'ProductionCast'. Scan count 1, logical reads 300485, physical reads 0, read-ahead reads 300485, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Production'. Scan count 1, logical reads 28651, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'AlternativeProductionTitle'. Scan count 1, logical reads 3649, physical reads 0, read-ahead reads 3649, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Person'. Scan count 1, logical reads 66751, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'AlternativePersonName'. Scan count 1, logical reads 6703, physical reads 0, read-ahead reads 6703, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-
-    (1 row(s) affected)
-    
-
- SQL Server Execution Times:
-   CPU time = 19297 ms,  elapsed time = 19536 ms.
-SQL Server parse and compile time: 
-   CPU time = 0 ms, elapsed time = 0 ms.
-
- SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
-
+ 
+ See analysis
  */
 SELECT DISTINCT TOP 10 PersonWithAlternatives.Id AS PersonId, 
              ProductionWithAlternatives.Id AS ProductionId,
@@ -684,32 +636,7 @@ ORDER BY PersonWithAlternatives.NumPersonNames * ProductionWithAlternatives.NumP
 /* 3.n) For each country, list the most frequent character name that appears in the productions of a production company (not a distributor) from that country.
  Will give all options if several.
  
- SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
-SQL Server parse and compile time: 
-   CPU time = 15 ms, elapsed time = 34 ms.
-
-    (632 row(s) affected)
-    
-Table 'Workfile'. Scan count 2, logical reads 11560, physical reads 1328, read-ahead reads 10232, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'ProductionCast'. Scan count 1, logical reads 300485, physical reads 0, read-ahead reads 300485, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'ProductionCharacter'. Scan count 1, logical reads 27687, physical reads 3, read-ahead reads 27683, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Production'. Scan count 1, logical reads 28651, physical reads 0, read-ahead reads 28544, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'ProductionCompany'. Scan count 1, logical reads 26783, physical reads 0, read-ahead reads 26783, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-Table 'Company'. Scan count 1, logical reads 2544, physical reads 3, read-ahead reads 2540, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
-
-    (1 row(s) affected)
-    
-
- SQL Server Execution Times:
-   CPU time = 234907 ms,  elapsed time = 240857 ms.
-SQL Server parse and compile time: 
-   CPU time = 0 ms, elapsed time = 0 ms.
-
- SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
-
+ See analysis
  */
 SELECT  CountryCode, Name, NameCount
 FROM(
@@ -727,3 +654,6 @@ FROM(
 ) AS NameWithNameCountPerCountryWithRank
 WHERE Rank <= 1
 ORDER BY CountryCode ASC
+
+
+exec sp_spaceused;
